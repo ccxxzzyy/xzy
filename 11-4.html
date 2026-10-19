@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>11-4 奔跑变色火柴人</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #1a1a2e;
+            color: #fff;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .xia-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1rem 2rem;
+            background: rgba(26, 26, 46, 0.9);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+        }
+
+        .xia-header h1 {
+            font-size: 1.3rem;
+        }
+
+        .xia-back {
+            color: #3498db;
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 0.4rem 1rem;
+            border: 1px solid #3498db;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .xia-back:hover {
+            background: #3498db;
+            color: #fff;
+        }
+
+        .xia-scene {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .xia-ground {
+            position: absolute;
+            bottom: 15%;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #444, #666, #444, transparent);
+        }
+
+        .xia-ground::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 0;
+            right: 0;
+            height: 20px;
+            background: repeating-linear-gradient(90deg, #333 0px, #333 40px, transparent 40px, transparent 80px);
+            animation: xiaGroundMove 0.4s linear infinite;
+        }
+
+        @keyframes xiaGroundMove {
+            0%   { background-position: 0 0; }
+            100% { background-position: -80px 0; }
+        }
+
+        .xia-runner {
+            position: relative;
+            width: 120px;
+            height: 200px;
+            animation: xiaBounce 0.4s ease-in-out infinite;
+        }
+
+        @keyframes xiaBounce {
+            0%, 100% { transform: translateY(0); }
+            50%      { transform: translateY(-12px); }
+        }
+
+        .xia-head {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 4px solid;
+            animation: xiaColorCycle 2s linear infinite;
+        }
+
+        .xia-body {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 70px;
+            border-radius: 2px;
+            animation: xiaColorCycle 2s linear infinite;
+        }
+
+        .xia-arm {
+            position: absolute;
+            top: 48px;
+            width: 4px;
+            height: 50px;
+            border-radius: 2px;
+            transform-origin: top center;
+            animation: xiaColorCycle 2s linear infinite;
+        }
+
+        .xia-arm-left {
+            left: 30px;
+            animation: xiaArmSwingLeft 0.4s ease-in-out infinite;
+        }
+
+        .xia-arm-right {
+            right: 30px;
+            animation: xiaArmSwingRight 0.4s ease-in-out infinite;
+        }
+
+        @keyframes xiaArmSwingLeft {
+            0%, 100% { transform: rotate(35deg); }
+            50%      { transform: rotate(-35deg); }
+        }
+
+        @keyframes xiaArmSwingRight {
+            0%, 100% { transform: rotate(-35deg); }
+            50%      { transform: rotate(35deg); }
+        }
+
+        .xia-leg {
+            position: absolute;
+            top: 106px;
+            width: 4px;
+            height: 60px;
+            border-radius: 2px;
+            transform-origin: top center;
+            animation: xiaColorCycle 2s linear infinite;
+        }
+
+        .xia-leg-left {
+            left: 42px;
+            animation: xiaLegSwingLeft 0.4s ease-in-out infinite;
+        }
+
+        .xia-leg-right {
+            right: 42px;
+            animation: xiaLegSwingRight 0.4s ease-in-out infinite;
+        }
+
+        @keyframes xiaLegSwingLeft {
+            0%, 100% { transform: rotate(40deg); }
+            50%      { transform: rotate(-40deg); }
+        }
+
+        @keyframes xiaLegSwingRight {
+            0%, 100% { transform: rotate(-40deg); }
+            50%      { transform: rotate(40deg); }
+        }
+
+        @keyframes xiaColorCycle {
+            0%   { background: #e74c3c; border-color: #e74c3c; }
+            20%  { background: #f39c12; border-color: #f39c12; }
+            40%  { background: #f1c40f; border-color: #f1c40f; }
+            60%  { background: #2ecc71; border-color: #2ecc71; }
+            80%  { background: #3498db; border-color: #3498db; }
+            100% { background: #e74c3c; border-color: #e74c3c; }
+        }
+
+        .xia-shadow {
+            position: absolute;
+            bottom: calc(15% - 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            animation: xiaShadowPulse 0.4s ease-in-out infinite;
+        }
+
+        @keyframes xiaShadowPulse {
+            0%, 100% { transform: translateX(-50%) scaleX(1); opacity: 0.3; }
+            50%      { transform: translateX(-50%) scaleX(0.7); opacity: 0.15; }
+        }
+
+        .xia-color-info {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            text-align: center;
+        }
+
+        .xia-color-info p {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .xia-color-bar {
+            display: flex;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .xia-color-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .xia-color-dot.xia-active {
+            border-color: #fff;
+            transform: scale(1.3);
+        }
+
+        .xia-speed-control {
+            position: fixed;
+            top: 5rem;
+            right: 2rem;
+            z-index: 100;
+            background: rgba(30, 30, 50, 0.9);
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid #333;
+        }
+
+        .xia-speed-control label {
+            display: block;
+            color: #aaa;
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .xia-speed-control input[type="range"] {
+            width: 150px;
+            accent-color: #3498db;
+        }
+
+        .xia-speed-value {
+            color: #2ecc71;
+            font-family: monospace;
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="xia-header">
+        <h1>奔跑变色火柴人</h1>
+        <a href="index.html" class="xia-back">返回首页</a>
+    </div>
+
+    <div class="xia-scene">
+        <div class="xia-ground"></div>
+        <div class="xia-shadow"></div>
+        <div class="xia-runner" id="xiaRunner">
+            <div class="xia-head"></div>
+            <div class="xia-body"></div>
+            <div class="xia-arm xia-arm-left"></div>
+            <div class="xia-arm xia-arm-right"></div>
+            <div class="xia-leg xia-leg-left"></div>
+            <div class="xia-leg xia-leg-right"></div>
+        </div>
+    </div>
+
+    <div class="xia-color-info">
+        <p>火柴人奔跑时颜色循环变化</p>
+        <div class="xia-color-bar" id="xiaColorBar"></div>
+    </div>
+
+    <div class="xia-speed-control">
+        <label>奔跑速度</label>
+        <input type="range" id="xiaSpeed" min="0.5" max="3" step="0.1" value="1">
+        <div class="xia-speed-value" id="xiaSpeedValue">1.0x</div>
+    </div>
+
+    <script>
+        const xiaColors = ['#e74c3c', '#f39c12', '#f1c40f', '#2ecc71', '#3498db'];
+        const xiaColorBar = document.getElementById('xiaColorBar');
+        const xiaRunner = document.getElementById('xiaRunner');
+        const xiaSpeed = document.getElementById('xiaSpeed');
+        const xiaSpeedValue = document.getElementById('xiaSpeedValue');
+
+        xiaColors.forEach((xiaColor, xiaIndex) => {
+            const xiaDot = document.createElement('div');
+            xiaDot.className = 'xia-color-dot';
+            xiaDot.style.background = xiaColor;
+            xiaDot.dataset.index = xiaIndex;
+            xiaColorBar.appendChild(xiaDot);
+        });
+
+        const xiaDots = document.querySelectorAll('.xia-color-dot');
+        let xiaColorIndex = 0;
+
+        setInterval(() => {
+            xiaDots.forEach(xiaDot => xiaDot.classList.remove('xia-active'));
+            xiaDots[xiaColorIndex].classList.add('xia-active');
+            xiaColorIndex = (xiaColorIndex + 1) % xiaColors.length;
+        }, 400);
+
+        xiaSpeed.addEventListener('input', function() {
+            const xiaValue = parseFloat(this.value);
+            xiaSpeedValue.textContent = xiaValue.toFixed(1) + 'x';
+            xiaRunner.style.animationDuration = (0.4 / xiaValue) + 's';
+            const xiaAllParts = xiaRunner.querySelectorAll('*');
+            xiaAllParts.forEach(xiaPart => {
+                xiaPart.style.animationDuration = (0.4 / xiaValue) + 's';
+            });
+        });
+    </script>
+</body>
+</html>

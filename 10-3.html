@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10-3 媒体查询</title>
+    <style>
+        /* 默认根字号（移动端）：1rem = 16px */
+        html {
+            font-size: 14px;
+        }
+
+        /* 平板：1rem = 18px */
+        @media (min-width: 768px) {
+            html {
+                font-size: 18px;
+            }
+        }
+
+        /* 桌面：1rem = 20px */
+        @media (min-width: 1024px) {
+            html {
+                font-size: 20px;
+            }
+        }
+
+        /* 大屏：1rem = 24px */
+        @media (min-width: 1440px) {
+            html {
+                font-size: 24px;
+            }
+        }
+
+        /* 全屏盒子 */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+        }
+
+        .box {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100vh;
+            color: #fff;
+            text-align: center;
+            transition: background-color 0.5s ease;
+            font-family: "Microsoft YaHei", sans-serif;
+            box-sizing: border-box;
+            padding: 2rem;
+        }
+
+        /* 移动端背景：红 */
+        .box {
+            background-color: #e74c3c;
+        }
+
+        /* 平板背景：绿 */
+        @media (min-width: 768px) {
+            .box {
+                background-color: #2ecc71;
+            }
+        }
+
+        /* 桌面背景：蓝 */
+        @media (min-width: 1024px) {
+            .box {
+                background-color: #3498db;
+            }
+        }
+
+        /* 大屏背景：紫 */
+        @media (min-width: 1440px) {
+            .box {
+                background-color: #9b59b6;
+            }
+        }
+
+        .title {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.95;
+        }
+
+        .info {
+            font-size: 1.125rem;
+            margin-top: 1.5rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 0.5rem;
+        }
+
+        .author {
+            font-size: 1.25rem;
+            margin-top: 2rem;
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        .hint {
+            position: absolute;
+            bottom: 1rem;
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1 class="title">媒体查询演示</h1>
+        <p class="subtitle">拖动浏览器窗口，背景颜色和文字大小会随视口变化</p>
+        <p class="info">使用 @media 媒体查询 + rem 单位实现响应式布局</p>
+        <p class="author">夏志远</p>
+        <p class="hint">断点：768px / 1024px / 1440px（红→绿→蓝→紫）</p>
+    </div>
+</body>
+</html>

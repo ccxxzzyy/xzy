@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>10-2 幻灯片</title>
+    <style>
+        body {
+            margin: 0;
+            background: #111;
+            font-family: "Microsoft YaHei", sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .slider {
+            position: relative;
+            width: 600px;
+            height: 400px;
+            overflow: hidden;
+            border: 4px solid #333;
+            border-radius: 8px;
+        }
+
+        /* 滑动轨道：3张图横向排列，通过 translateX 切换位置 */
+        .slides {
+            display: flex;
+            width: 300%;
+            height: 100%;
+            /* 9秒一个循环，3张图，每张停留约3秒 */
+            animation: slide 9s ease-in-out infinite;
+        }
+
+        .slides img {
+            width: 33.3333%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* 图片位置切换动画（非透明度变化） */
+        @keyframes slide {
+            0%, 28% {
+                transform: translateX(0);
+            }
+            33%, 61% {
+                transform: translateX(-33.3333%);
+            }
+            66%, 94% {
+                transform: translateX(-66.6666%);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        /* 文字叠在图片上：半透明黑底，白字 */
+        .caption {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.6); /* 透明黑底 */
+            color: #fff; /* 白字 */
+            text-align: center;
+        }
+
+        .caption h2 {
+            margin: 0 0 8px;
+            font-size: 24px;
+        }
+
+        .caption p {
+            margin: 0;
+            font-size: 14px;
+            color: #ddd;
+        }
+
+        /* 标题区：上图下文外层 */
+        .card {
+            width: 600px;
+            background: #1a1a1a;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .footer-text {
+            padding: 20px;
+            color: #eee;
+            text-align: center;
+        }
+
+        .footer-text h3 {
+            margin: 0 0 8px;
+            color: #fff;
+        }
+
+        .footer-text p {
+            margin: 0;
+            font-size: 14px;
+            color: #aaa;
+        }
+
+        .author {
+            margin-top: 20px;
+            text-align: center;
+            color: #888;
+            font-size: 14px;
+        }
+
+        .author span {
+            color: #ffd700;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <div class="card">
+            <!-- 上图：幻灯片（图片位置切换动画） -->
+            <div class="slider">
+                <div class="slides">
+                    <img src="img/1.jpg" alt="图1">
+                    <img src="img/2.jpg" alt="图2">
+                    <img src="img/3.jpg" alt="图3">
+                </div>
+                <!-- 字在图片上：半透明黑底白字 -->
+                <div class="caption">
+                    <h2>风景如画</h2>
+                    <p>夏志远 · CSS animation 幻灯片演示</p>
+                </div>
+            </div>
+            <!-- 下文 -->
+            <div class="footer-text">
+                <h3>纯 CSS 幻灯片</h3>
+                <p>使用 @keyframes 控制图片位置（translateX）实现切换，无 JS 代码</p>
+            </div>
+        </div>
+        <p class="author">作者：<span>夏志远</span></p>
+    </div>
+</body>
+</html>

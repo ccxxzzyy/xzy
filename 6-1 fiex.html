@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flex布局演示</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body{
+            padding: 20px;
+        }
+
+        h2{
+            margin-bottom: 20px;
+        }
+
+        .wrap{
+            display: flex;
+            gap: 20px;
+        }
+
+        .container{
+            width: 240px;
+            height: 300px;
+            border: 1px solid #333;
+            padding: 10px;
+        }
+
+        .item{
+            background-color: #cccccc;
+            border: 1px solid #666;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+        }
+
+        /* 第1个：单个方块居中（1个） */
+        .box1{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .box1 .item{
+            width: 70px;
+            height: 70px;
+        }
+
+        /* 第2个：上下两个方块（2个） */
+        .box2{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        .box2 .item{
+            width: 80px;
+            height: 70px;
+        }
+
+        /* 第3个：上1长条，下面2个并排（一共3个方块，就是截图样式） */
+        .box3{
+            display: flex;
+            flex-direction: column;
+            gap:10px;
+        }
+        .box3 .top-item{
+            width:100%;
+            height:80px;
+        }
+        .box3 .row{
+            display:flex;
+            gap:10px;
+        }
+        .box3 .row .item{
+            flex:1;
+            height:80px;
+        }
+
+        /* 第4个：4个方块，2行2列 */
+        .box4{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-content: center;
+            gap: 10px;
+        }
+        .box4 .item{
+            width:90px;
+            height:90px;
+        }
+    </style>
+</head>
+<body>
+    <h2>夏志远 Flex布局演示（共10个方块）</h2>
+    <div class="wrap">
+        <!-- 第1个容器：1个方块 -->
+        <div class="container box1">
+            <div class="item">1</div>
+        </div>
+        <!-- 第2个容器：2个方块 -->
+        <div class="container box2">
+            <div class="item">2</div>
+            <div class="item">3</div>
+        </div>
+        <!-- 第3个容器：3个方块，上长条+下方两个并排（你截图样式） -->
+        <div class="container box3">
+            <div class="item top-item">4</div>
+            <div class="row">
+                <div class="item">5</div>
+                <div class="item">6</div>
+            </div>
+        </div>
+        <!-- 第4个容器：4个方块，2行2列 -->
+        <div class="container box4">
+            <div class="item">7</div>
+            <div class="item">8</div>
+            <div class="item">9</div>
+            <div class="item">10</div>
+        </div>
+    </div>
+</body>
+</html>

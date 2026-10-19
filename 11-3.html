@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>11-3 随机3D旋转画廊</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #1a1a2e;
+            color: #fff;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .xia-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1rem 2rem;
+            background: rgba(26, 26, 46, 0.9);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+        }
+
+        .xia-header h1 {
+            font-size: 1.3rem;
+        }
+
+        .xia-back {
+            color: #3498db;
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 0.4rem 1rem;
+            border: 1px solid #3498db;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .xia-back:hover {
+            background: #3498db;
+            color: #fff;
+        }
+
+        .xia-gallery-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1200px;
+            overflow: hidden;
+        }
+
+        .xia-carousel {
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .xia-slide {
+            position: absolute;
+            width: 280px;
+            height: 380px;
+            left: 50%;
+            top: 50%;
+            margin-left: -140px;
+            margin-top: -190px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            backface-visibility: hidden;
+        }
+
+        .xia-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .xia-slide-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .xia-controls {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .xia-btn {
+            padding: 0.7rem 1.4rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            color: #fff;
+            background: #3498db;
+            transition: all 0.3s;
+        }
+
+        .xia-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .xia-btn-green { background: #2ecc71; }
+        .xia-btn-green:hover { box-shadow: 0 6px 20px rgba(46, 204, 113, 0.4); }
+
+        .xia-btn-orange { background: #e67e22; }
+        .xia-btn-orange:hover { box-shadow: 0 6px 20px rgba(230, 126, 34, 0.4); }
+
+        .xia-btn-purple { background: #9b59b6; }
+        .xia-btn-purple:hover { box-shadow: 0 6px 20px rgba(155, 89, 182, 0.4); }
+
+        .xia-info {
+            position: fixed;
+            bottom: 6rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            text-align: center;
+            color: #888;
+            font-size: 0.85rem;
+        }
+
+        .xia-info span {
+            color: #f1c40f;
+            font-weight: bold;
+        }
+
+        .xia-random-indicator {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 50;
+            font-size: 3rem;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.15);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .xia-random-indicator.xia-active {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="xia-header">
+        <h1>随机 3D 旋转画廊</h1>
+        <a href="index.html" class="xia-back">返回首页</a>
+    </div>
+
+    <div class="xia-gallery-container">
+        <div class="xia-carousel" id="xiaCarousel"></div>
+    </div>
+
+    <div class="xia-random-indicator" id="xiaIndicator">随机旋转中...</div>
+
+    <div class="xia-info">
+        当前角度：<span id="xiaAngleDisplay">0</span>° |
+        图片数量：<span id="xiaCountDisplay">0</span> |
+        自动旋转：<span id="xiaAutoDisplay">关闭</span>
+    </div>
+
+    <div class="xia-controls">
+        <button class="xia-btn" onclick="xiaPrev()">上一张</button>
+        <button class="xia-btn xia-btn-green" onclick="xiaRandomRotate()">随机旋转</button>
+        <button class="xia-btn xia-btn-orange" onclick="xiaShuffle()">随机打乱</button>
+        <button class="xia-btn xia-btn-purple" onclick="xiaToggleAuto()">自动旋转</button>
+        <button class="xia-btn" onclick="xiaNext()">下一张</button>
+    </div>
+
+    <script>
+        const xiaImages = [
+            { src: 'img/1.jpg', label: '风景 1' },
+            { src: 'img/2.jpg', label: '风景 2' },
+            { src: 'img/3.jpg', label: '风景 3' },
+            { src: 'img/4.jpg', label: '风景 4' },
+            { src: 'img/5.jpg', label: '风景 5' },
+            { src: 'img/6.jpg', label: '风景 6' },
+            { src: 'img/7.jpg', label: '风景 7' }
+        ];
+
+        let xiaCurrentAngle = 0;
+        let xiaAutoInterval = null;
+        let xiaShuffled = [...xiaImages];
+
+        const xiaCarousel = document.getElementById('xiaCarousel');
+        const xiaAngleDisplay = document.getElementById('xiaAngleDisplay');
+        const xiaCountDisplay = document.getElementById('xiaCountDisplay');
+        const xiaAutoDisplay = document.getElementById('xiaAutoDisplay');
+        const xiaIndicator = document.getElementById('xiaIndicator');
+
+        function xiaBuildCarousel() {
+            xiaCarousel.innerHTML = '';
+            const xiaCount = xiaShuffled.length;
+            const xiaAngleStep = 360 / xiaCount;
+            const xiaRadius = Math.round((280 / 2) / Math.tan(Math.PI / xiaCount)) + 50;
+
+            xiaShuffled.forEach((xiaImg, xiaIndex) => {
+                const xiaSlide = document.createElement('div');
+                xiaSlide.className = 'xia-slide';
+                xiaSlide.innerHTML = `
+                    <img src="${xiaImg.src}" alt="${xiaImg.label}">
+                    <div class="xia-slide-label">${xiaImg.label}</div>
+                `;
+                xiaSlide.style.transform = `rotateY(${xiaIndex * xiaAngleStep}deg) translateZ(${xiaRadius}px)`;
+                xiaCarousel.appendChild(xiaSlide);
+            });
+
+            xiaCountDisplay.textContent = xiaCount;
+        }
+
+        function xiaRotateCarousel(xiaTargetAngle) {
+            xiaCurrentAngle = xiaTargetAngle;
+            xiaCarousel.style.transform = `translateZ(-400px) rotateX(-8deg) rotateY(${xiaCurrentAngle}deg)`;
+            xiaAngleDisplay.textContent = Math.round(((xiaCurrentAngle % 360) + 360) % 360);
+        }
+
+        function xiaPrev() {
+            const xiaCount = xiaShuffled.length;
+            const xiaStep = 360 / xiaCount;
+            xiaRotateCarousel(xiaCurrentAngle - xiaStep);
+        }
+
+        function xiaNext() {
+            const xiaCount = xiaShuffled.length;
+            const xiaStep = 360 / xiaCount;
+            xiaRotateCarousel(xiaCurrentAngle + xiaStep);
+        }
+
+        function xiaRandomRotate() {
+            xiaIndicator.classList.add('xia-active');
+            let xiaTicks = 0;
+            const xiaMaxTicks = 20;
+            const xiaInterval = setInterval(() => {
+                xiaRotateCarousel(Math.random() * 360);
+                xiaTicks++;
+                if (xiaTicks >= xiaMaxTicks) {
+                    clearInterval(xiaInterval);
+                    xiaIndicator.classList.remove('xia-active');
+                }
+            }, 80);
+        }
+
+        function xiaShuffle() {
+            for (let xiaI = xiaShuffled.length - 1; xiaI > 0; xiaI--) {
+                const xiaJ = Math.floor(Math.random() * (xiaI + 1));
+                [xiaShuffled[xiaI], xiaShuffled[xiaJ]] = [xiaShuffled[xiaJ], xiaShuffled[xiaI]];
+            }
+            xiaBuildCarousel();
+            xiaRotateCarousel(xiaCurrentAngle);
+        }
+
+        function xiaToggleAuto() {
+            if (xiaAutoInterval) {
+                clearInterval(xiaAutoInterval);
+                xiaAutoInterval = null;
+                xiaAutoDisplay.textContent = '关闭';
+            } else {
+                xiaAutoInterval = setInterval(() => {
+                    xiaRotateCarousel(xiaCurrentAngle + 2);
+                }, 50);
+                xiaAutoDisplay.textContent = '开启';
+            }
+        }
+
+        xiaBuildCarousel();
+        xiaRotateCarousel(0);
+    </script>
+</body>
+</html>

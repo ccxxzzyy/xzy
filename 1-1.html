@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1-1</title>
+    <style>
+        :root {
+            --ink: #161616;
+            --paper: #f4f0e8;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: var(--paper);
+            font-family: "Microsoft YaHei", sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .text-box {
+            font-size: 64px;
+            color: var(--ink);
+        }
+    </style>
+</head>
+<body>
+    <div class="text-box">24001010112夏志远</div>
+    <!-- 页面导航：返回主页 / 下一页 -->
+    <div style="position:fixed; bottom:0; left:0; right:0; background:#f4f0e8; border-top:1px solid rgba(22,22,22,0.2); padding:12px 24px; display:flex; justify-content:space-between; gap:12px; font-family:'Microsoft YaHei', sans-serif;">
+        <a href="index.html" style="text-decoration:none; color:#161616; border:1px solid #161616; background:#c9ddff; padding:8px 18px;">返回主页</a>
+        <a href="2-1.html" style="text-decoration:none; color:#161616; border:1px solid #161616; background:#d7f36b; padding:8px 18px;">下一页 →</a>
+    </div>
+</body>
+</html>

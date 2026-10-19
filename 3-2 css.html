@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>112 xzy</title>
+    <style>
+        /*1. h2黑底白字 */
+        h2{
+            background-color: black;
+            color: white;
+        }
+        h3{color: red;}
+        p{color: blue;}
+        #box{
+            width: 300px;
+            height: 300px;
+            background-color: yellow;
+        }
+        .n1{color: red;}
+        /* 学号盒子样式 任务4 */
+        .stuId{
+            width:220px;
+            height:100px;
+            background-color:#3498db;
+        }
+    </style>
+
+</head>
+<body>
+    <h2>层叠样式表Css</h2>
+    <div id="box">
+        <!--任务3：选择器三个字白色 -->
+        <h3>CSS<span style="color:white">选择器</span></h3>
+        <!--任务2：名字每个字不同颜色，同一行 -->
+        <p>
+            <span class="n1">夏</span>
+            <span style="color:green">志</span>
+            <span style="color:orange">远</span>
+        </p>
+        <p>CSS属性</p>
+    </div>
+    <!--任务4：新增盒子，学号112 -->
+    <div class="stuId">学号：112</div>
+    <!-- 页面导航：连接 1-1 到 4-1 各页 -->
+    <div style="margin-top:48px; padding:20px 0; border-top:1px solid rgba(22,22,22,0.2); font-family:'Microsoft YaHei', sans-serif; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+        <a href="3-1 from.html" style="text-decoration:none; color:#161616; border:1px solid #161616; background:#d7f36b; padding:8px 18px;">← 上一页</a>
+        <a href="index.html" style="text-decoration:none; color:#161616; border:1px solid #161616; background:#c9ddff; padding:8px 18px;">返回主页</a>
+        <a href="4-1 css.html" style="text-decoration:none; color:#161616; border:1px solid #161616; background:#d7f36b; padding:8px 18px;">下一页 →</a>
+    </div>
+</body>
+</html>

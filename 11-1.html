@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>11-1 Web前端长度变化</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #1e1e1e;
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(30, 30, 30, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #333;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            width: 0%;
+            z-index: 101;
+            transition: width 0.1s;
+        }
+
+        .section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 4rem 2rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .section p {
+            color: #aaa;
+            margin-bottom: 2rem;
+            text-align: center;
+            max-width: 600px;
+        }
+
+        .demo-box {
+            width: 300px;
+            height: 200px;
+            background: #2a2a2a;
+            border: 2px solid #3498db;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .demo-box .size-label {
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            font-size: 0.85rem;
+            color: #2ecc71;
+            font-family: monospace;
+        }
+
+        .demo-box.grow {
+            transform: scale(1.3);
+            border-color: #2ecc71;
+        }
+
+        .demo-box.shrink {
+            transform: scale(0.7);
+            border-color: #e74c3c;
+        }
+
+        .counter-section {
+            text-align: center;
+        }
+
+        .counter {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #3498db;
+            margin: 1rem 0;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn-group button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            color: #fff;
+            transition: transform 0.2s;
+        }
+
+        .btn-group button:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-grow {
+            background: #2ecc71;
+        }
+
+        .btn-shrink {
+            background: #e74c3c;
+        }
+
+        .btn-reset {
+            background: #f39c12;
+        }
+
+        .length-bar-container {
+            width: 80%;
+            max-width: 600px;
+            height: 30px;
+            background: #2a2a2a;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid #444;
+        }
+
+        .length-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #9b59b6);
+            border-radius: 15px;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            font-size: 0.8rem;
+            font-family: monospace;
+            white-space: nowrap;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            width: 80%;
+            max-width: 800px;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: #2a2a2a;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #333;
+        }
+
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #f1c40f;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card .label {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .scroll-section {
+            background: #1a1a2e;
+        }
+
+        .timeline {
+            width: 80%;
+            max-width: 500px;
+            padding: 2rem 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: all 0.6s ease;
+        }
+
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .timeline-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #3498db;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .timeline-content {
+            background: #2a2a2a;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            flex: 1;
+            border-left: 3px solid #3498db;
+        }
+
+        .timeline-content h4 {
+            margin-bottom: 0.3rem;
+        }
+
+        .timeline-content p {
+            margin: 0;
+            font-size: 0.85rem;
+        }
+
+        .author {
+            text-align: center;
+            padding: 2rem;
+            background: #111;
+            color: #888;
+        }
+
+        .author span {
+            color: #ffd700;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+
+    <div class="header">
+        <h1>Web前端长度变化演示</h1>
+        <span style="color: #888; font-size: 0.9rem;">滚动页面查看效果</span>
+    </div>
+
+    <!-- Section 1: 元素尺寸变化 -->
+    <div class="section" id="section1">
+        <h2>元素尺寸变化</h2>
+        <p>点击下方按钮，观察元素长度（宽高）的动态变化</p>
+        <div class="demo-box" id="demoBox">
+            可伸缩盒子
+            <span class="size-label" id="sizeLabel">300 x 200</span>
+        </div>
+        <div class="btn-group">
+            <button class="btn-grow" onclick="growBox()">伸长 +30%</button>
+            <button class="btn-shrink" onclick="shrinkBox()">缩短 -30%</button>
+            <button class="btn-reset" onclick="resetBox()">重置</button>
+        </div>
+    </div>
+
+    <!-- Section 2: 进度条长度变化 -->
+    <div class="section" id="section2">
+        <h2>进度条长度变化</h2>
+        <p>页面滚动进度实时映射为进度条长度，同时顶部有滚动指示条</p>
+        <div class="length-bar-container">
+            <div class="length-bar" id="lengthBar" style="width: 0%">0%</div>
+        </div>
+        <div class="stats">
+            <div class="stat-card">
+                <div class="value" id="docHeight">0</div>
+                <div class="label">文档总高度 (px)</div>
+            </div>
+            <div class="stat-card">
+                <div class="value" id="viewportHeight">0</div>
+                <div class="label">视口高度 (px)</div>
+            </div>
+            <div class="stat-card">
+                <div class="value" id="scrollY">0</div>
+                <div class="label">滚动距离 (px)</div>
+            </div>
+            <div class="stat-card">
+                <div class="value" id="percent">0%</div>
+                <div class="label">滚动百分比</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 3: 时间轴长度变化 -->
+    <div class="section scroll-section" id="section3">
+        <h2>时间轴长度变化</h2>
+        <p>滚动到此处时，时间轴项依次滑入展示，长度从零延伸到完整</p>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h4>HTML 结构</h4>
+                    <p>搭建页面骨架，确定文档基础长度</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot" style="background: #2ecc71;"></div>
+                <div class="timeline-content" style="border-color: #2ecc71;">
+                    <h4>CSS 样式</h4>
+                    <p>定义元素尺寸，控制视觉长度变化</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot" style="background: #f1c40f;"></div>
+                <div class="timeline-content" style="border-color: #f1c40f;">
+                    <h4>JavaScript 交互</h4>
+                    <p>动态计算长度，响应用户操作实时变化</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot" style="background: #9b59b6;"></div>
+                <div class="timeline-content" style="border-color: #9b59b6;">
+                    <h4>响应式适配</h4>
+                    <p>媒体查询调整布局长度，适配各种视口</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot" style="background: #e74c3c;"></div>
+                <div class="timeline-content" style="border-color: #e74c3c;">
+                    <h4>动画过渡</h4>
+                    <p>transition/keyframes 实现长度的平滑变化</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 4: 数字增长动画 -->
+    <div class="section counter-section" id="section4">
+        <h2>数字增长动画</h2>
+        <p>数字从0增长到目标值，直观感受"长度"数值变化</p>
+        <div class="counter" id="counter">0</div>
+        <p style="color: #666; font-size: 0.85rem;">当前视口宽度：<span id="vwDisplay" style="color: #3498db;">0</span> px</p>
+        <div class="btn-group">
+            <button class="btn-grow" onclick="startCounter()">开始计数</button>
+        </div>
+    </div>
+
+    <div class="author">
+        作者：<span>夏志远</span>
+    </div>
+
+    <script>
+        // ===== Section 1: 元素尺寸变化 =====
+        const demoBox = document.getElementById('demoBox');
+        const sizeLabel = document.getElementById('sizeLabel');
+        let currentScale = 1;
+
+        function updateSizeLabel() {
+            const w = Math.round(300 * currentScale);
+            const h = Math.round(200 * currentScale);
+            sizeLabel.textContent = w + ' x ' + h;
+        }
+
+        function growBox() {
+            currentScale = Math.min(currentScale + 0.3, 2.5);
+            demoBox.style.transform = `scale(${currentScale})`;
+            updateSizeLabel();
+        }
+
+        function shrinkBox() {
+            currentScale = Math.max(currentScale - 0.3, 0.3);
+            demoBox.style.transform = `scale(${currentScale})`;
+            updateSizeLabel();
+        }
+
+        function resetBox() {
+            currentScale = 1;
+            demoBox.style.transform = 'scale(1)';
+            updateSizeLabel();
+        }
+
+        // ===== Section 2 & 4: 滚动长度统计 =====
+        const progressBar = document.getElementById('progressBar');
+        const lengthBar = document.getElementById('lengthBar');
+        const docHeightEl = document.getElementById('docHeight');
+        const viewportHeightEl = document.getElementById('viewportHeight');
+        const scrollYEl = document.getElementById('scrollY');
+        const percentEl = document.getElementById('percent');
+        const vwDisplay = document.getElementById('vwDisplay');
+
+        function updateScrollStats() {
+            const docHeight = document.documentElement.scrollHeight;
+            const viewportHeight = window.innerHeight;
+            const scrollY = window.scrollY;
+            const maxScroll = docHeight - viewportHeight;
+            const percent = maxScroll > 0 ? Math.round((scrollY / maxScroll) * 100) : 0;
+
+            docHeightEl.textContent = docHeight;
+            viewportHeightEl.textContent = viewportHeight;
+            scrollYEl.textContent = Math.round(scrollY);
+            percentEl.textContent = percent + '%';
+            vwDisplay.textContent = window.innerWidth;
+
+            lengthBar.style.width = Math.max(percent, 3) + '%';
+            lengthBar.textContent = percent + '%';
+            progressBar.style.width = percent + '%';
+        }
+
+        window.addEventListener('scroll', updateScrollStats);
+        window.addEventListener('resize', updateScrollStats);
+        updateScrollStats();
+
+        // ===== Section 3: 时间轴滚动显示 =====
+        const timelineItems = document.querySelectorAll('.timeline-item');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.3 });
+
+        timelineItems.forEach(item => observer.observe(item));
+
+        // ===== Section 4: 数字增长动画 =====
+        let counterRunning = false;
+
+        function startCounter() {
+            if (counterRunning) return;
+            counterRunning = true;
+
+            const counter = document.getElementById('counter');
+            const target = 2026;
+            const duration = 2000;
+            const startTime = performance.now();
+
+            function animate(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                const current = Math.round(eased * target);
+                counter.textContent = current;
+
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    counterRunning = false;
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+    </script>
+</body>
+</html>

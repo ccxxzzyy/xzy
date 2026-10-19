@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10-4 响应式布局</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            min-width: 320px;
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #1e1e1e;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* 盒子容器：默认 flex 布局 */
+        .boxes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        /* 8 个盒子 */
+        .box {
+            flex: 1 1 100%;              /* 移动端：1 列 */
+            min-height: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border-radius: 0.5rem;
+            color: #fff;
+        }
+
+        /* 不同颜色盒子 */
+        .box:nth-child(1) { background: #e74c3c; }
+        .box:nth-child(2) { background: #3498db; }
+        .box:nth-child(3) { background: #2ecc71; }
+        .box:nth-child(4) { background: #f1c40f; }
+        .box:nth-child(5) { background: #9b59b6; }
+        .box:nth-child(6) { background: #e67e22; }
+        .box:nth-child(7) { background: #1abc9c; }
+        .box:nth-child(8) { background: #34495e; }
+
+        /* 媒体查询1：平板 - 每行 2 个 */
+        @media (min-width: 600px) {
+            .box {
+                flex: 1 1 calc(50% - 1rem);
+            }
+        }
+
+        /* 媒体查询2：桌面 - 每行 4 个 */
+        @media (min-width: 900px) {
+            .box {
+                flex: 1 1 calc(25% - 1rem);
+            }
+        }
+
+        /* 媒体查询3：大屏 - 每行 8 个 */
+        @media (min-width: 1200px) {
+            .box {
+                flex: 1 1 calc(12.5% - 1rem);
+                min-height: 140px;
+            }
+        }
+
+        .info {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: #2a2a2a;
+            border-left: 4px solid #3498db;
+            border-radius: 0.25rem;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .info span {
+            color: #f1c40f;
+            font-weight: bold;
+        }
+
+        .author {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 1.25rem;
+            color: #ffd700;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Media Query 响应式布局</h1>
+
+        <div class="boxes">
+            <div class="box">1</div>
+            <div class="box">2</div>
+            <div class="box">3</div>
+            <div class="box">4</div>
+            <div class="box">5</div>
+            <div class="box">6</div>
+            <div class="box">7</div>
+            <div class="box">8</div>
+        </div>
+
+        <div class="info">
+            <p>视口变化时每行盒子数量变化：</p>
+            <p>&lt; 600px：每行 <span>1</span> 个</p>
+            <p>≥ 600px：每行 <span>2</span> 个</p>
+            <p>≥ 900px：每行 <span>4</span> 个</p>
+            <p>≥ 1200px：每行 <span>8</span> 个</p>
+        </div>
+
+        <p class="author">夏志远</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>10-1 animation 动画</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: #f0f0f0;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 40px;
+            color: #333;
+        }
+
+        /* 唯一盒子：4色背景循环 + 多种扩展动画 */
+        .box {
+            width: 200px;
+            height: 200px;
+            margin: 30px auto;
+            border-radius: 20px;
+            /* animation 简写：名称 时长 速度曲线 延迟 次数 方向 填充模式 状态 */
+            animation: colorChange 4s linear infinite,
+                       scaleChange 2s ease-in-out infinite alternate,
+                       rotateChange 4s ease-in-out infinite,
+                       shadowChange 2s ease-in-out infinite alternate,
+                       moveChange 4s ease-in-out infinite alternate;
+        }
+
+        /* 颜色动画：4种颜色循环变化 */
+        @keyframes colorChange {
+            0% {
+                background-color: #ff6b6b; /* 红色 */
+            }
+            25% {
+                background-color: #4ecdc4; /* 青色 */
+            }
+            50% {
+                background-color: #ffe66d; /* 黄色 */
+            }
+            75% {
+                background-color: #95e1d3; /* 薄荷绿 */
+            }
+            100% {
+                background-color: #ff6b6b; /* 回到红色 */
+            }
+        }
+
+        /* 缩放动画 */
+        @keyframes scaleChange {
+            0% {
+                transform: scale(1);
+            }
+            100% {
+                transform: scale(1.2);
+            }
+        }
+
+        /* 圆角变形动画 */
+        @keyframes rotateChange {
+            0% {
+                border-radius: 20px;
+            }
+            25% {
+                border-radius: 50%;
+            }
+            50% {
+                border-radius: 100px 20px 100px 20px;
+            }
+            75% {
+                border-radius: 20px 100px 20px 100px;
+            }
+            100% {
+                border-radius: 20px;
+            }
+        }
+
+        /* 阴影动画 */
+        @keyframes shadowChange {
+            0% {
+                box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+            }
+            100% {
+                box-shadow: 0 0 40px rgba(149, 225, 211, 0.9);
+            }
+        }
+
+        /* 移动动画 */
+        @keyframes moveChange {
+            0% {
+                translate: -100px 0;
+            }
+            100% {
+                translate: 100px 0;
+            }
+        }
+
+        .tip {
+            color: #888;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>CSS animation 动画演示</h2>
+
+        <div class="box"></div>
+        <p class="tip">盒子：4色背景循环 + 缩放 + 圆角变形 + 阴影变化 + 左右移动（多动画叠加）</p>
+    </div>
+</body>
+</html>

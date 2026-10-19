@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一左一右 夏志远</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .title{
+            width: 700px;
+            height: 60px;
+            line-height: 60px;
+            padding-left: 10px;
+            padding-right: 10px;
+            margin: 20px 40px;
+        }
+        .title h2{
+            font-size: 22px;
+            color: #000;
+            font-weight: normal;
+        }
+        .title a{
+            font-size: 16px;
+            color: #000;
+            text-decoration: none;
+        }
+        .title a:hover{
+            text-decoration: underline;
+        }
+        /* 第1个：flex + justify-content:space-between */
+        .title:first-child{
+            border-bottom:2px solid #000;
+            display: flex;
+            justify-content: space-between;
+        }
+        /* 第2个：flex + flex-grow */
+        .title:nth-child(2){
+            border-bottom:2px solid #000;
+            display: flex;
+        }
+        .title:nth-child(2) h2{
+            flex-grow: 1;
+        }
+        /* 第3个：相对定位 + 绝对定位 */
+        .title:nth-child(3){
+            position: relative;
+            border-bottom:2px solid #000;
+        }
+        .title:nth-child(3) a{
+            position: absolute;
+            right:10px;
+            top:0;
+        }
+    </style>
+</head>
+<body>
+    <div class="title">
+        <h2>夏志远的标题</h2>
+        <a href="#">更多</a>
+    </div>
+    <div class="title">
+        <h2>夏志远的标题</h2>
+        <a href="#">更多</a>
+    </div>
+    <div class="title">
+        <h2>夏志远的标题</h2>
+        <a href="#">更多</a>
+    </div>
+</body>
+</html>
