@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>13-1 Font Awesome 字体图标</title>
+    <link rel="stylesheet" href="cdn/font-awesome/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #1e1e1e;
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        .xia-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(30, 30, 30, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #333;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .xia-header h1 {
+            font-size: 1.5rem;
+        }
+
+        .xia-home-link {
+            color: #3498db;
+            text-decoration: none;
+            font-size: 0.95rem;
+            border: 1px solid #3498db;
+            padding: 0.4rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .xia-home-link:hover {
+            background: #3498db;
+            color: #fff;
+        }
+
+        .xia-section {
+            padding: 3rem 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            border-bottom: 1px solid #333;
+        }
+
+        .xia-section h2 {
+            font-size: 1.6rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .xia-section .xia-desc {
+            color: #888;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .xia-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: 1rem;
+        }
+
+        .xia-icon-card {
+            background: #2a2a2a;
+            border: 1px solid #3a3a3a;
+            border-radius: 12px;
+            padding: 1.2rem 0.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .xia-icon-card:hover {
+            border-color: #3498db;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.25);
+        }
+
+        .xia-icon-card i {
+            font-size: 1.8rem;
+            display: block;
+            margin-bottom: 0.6rem;
+            transition: all 0.3s;
+        }
+
+        .xia-icon-card:hover i {
+            transform: scale(1.2);
+        }
+
+        .xia-icon-card span {
+            font-size: 0.75rem;
+            color: #999;
+            word-break: break-all;
+        }
+
+        .xia-c-red i { color: #e74c3c; }
+        .xia-c-green i { color: #2ecc71; }
+        .xia-c-blue i { color: #3498db; }
+        .xia-c-yellow i { color: #f1c40f; }
+        .xia-c-purple i { color: #9b59b6; }
+        .xia-c-orange i { color: #e67e22; }
+        .xia-c-pink i { color: #ff6b9d; }
+        .xia-c-cyan i { color: #1abc9c; }
+
+        .xia-demo-box {
+            background: #2a2a2a;
+            border: 1px solid #3a3a3a;
+            border-radius: 14px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .xia-demo-icon {
+            font-size: 5rem;
+            color: #e74c3c;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .xia-demo-icon:hover {
+            transform: scale(1.3) rotate(10deg);
+        }
+
+        .xia-btn-group {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 0.8rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .xia-btn {
+            padding: 0.55rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            color: #fff;
+            transition: transform 0.2s;
+        }
+
+        .xia-btn:hover {
+            transform: scale(1.08);
+        }
+
+        .xia-btn-red { background: #e74c3c; }
+        .xia-btn-green { background: #2ecc71; }
+        .xia-btn-blue { background: #3498db; }
+        .xia-btn-purple { background: #9b59b6; }
+
+        .xia-size-row {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .xia-size-row .fa-heart {
+            color: #e74c3c;
+        }
+
+        .xia-compare {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .xia-compare-item {
+            background: #2a2a2a;
+            border: 1px solid #3a3a3a;
+            border-radius: 12px;
+            padding: 1.5rem 2.5rem;
+            text-align: center;
+        }
+
+        .xia-compare-item .xia-compare-icon {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .xia-compare-item p {
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .xia-author {
+            text-align: center;
+            padding: 2rem;
+            background: #111;
+            color: #888;
+        }
+
+        .xia-author span {
+            color: #ffd700;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="xia-header">
+        <h1>13-1 Font Awesome 字体图标</h1>
+        <a href="index.html" class="xia-home-link">返回首页</a>
+    </div>
+
+    <div class="xia-section">
+        <h2>字体图标演示</h2>
+        <p class="xia-desc">Font Awesome 通过字体文件渲染图标，用 CSS 类名调用，可像文字一样设置大小与颜色</p>
+        <div class="xia-compare">
+            <div class="xia-compare-item">
+                <i class="fa-solid fa-heart xia-compare-icon" style="color:#e74c3c"></i>
+                <p>fa-solid 实线图标</p>
+            </div>
+            <div class="xia-compare-item">
+                <i class="fa-regular fa-heart xia-compare-icon" style="color:#3498db"></i>
+                <p>fa-regular 线框图标</p>
+            </div>
+            <div class="xia-compare-item">
+                <i class="fa-brands fa-github xia-compare-icon" style="color:#9b59b6"></i>
+                <p>fa-brands 品牌图标</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="xia-section">
+        <h2>尺寸缩放</h2>
+        <p class="xia-desc">字体图标遵循 font-size，任意缩放不会失真</p>
+        <div class="xia-size-row">
+            <i class="fa-solid fa-heart" style="font-size:16px"></i>
+            <i class="fa-solid fa-heart" style="font-size:24px"></i>
+            <i class="fa-solid fa-heart" style="font-size:36px"></i>
+            <i class="fa-solid fa-heart" style="font-size:52px"></i>
+            <i class="fa-solid fa-heart" style="font-size:72px"></i>
+        </div>
+    </div>
+
+    <div class="xia-section">
+        <h2>常用图标</h2>
+        <p class="xia-desc">点击图标卡片试试，悬停有动效</p>
+        <div class="xia-grid">
+            <div class="xia-icon-card xia-c-red"><i class="fa-solid fa-heart"></i><span>fa-heart</span></div>
+            <div class="xia-icon-card xia-c-green"><i class="fa-solid fa-star"></i><span>fa-star</span></div>
+            <div class="xia-icon-card xia-c-blue"><i class="fa-solid fa-user"></i><span>fa-user</span></div>
+            <div class="xia-icon-card xia-c-yellow"><i class="fa-solid fa-bell"></i><span>fa-bell</span></div>
+            <div class="xia-icon-card xia-c-purple"><i class="fa-solid fa-gear"></i><span>fa-gear</span></div>
+            <div class="xia-icon-card xia-c-orange"><i class="fa-solid fa-house"></i><span>fa-house</span></div>
+            <div class="xia-icon-card xia-c-pink"><i class="fa-solid fa-magnifying-glass"></i><span>fa-magnifying-glass</span></div>
+            <div class="xia-icon-card xia-c-cyan"><i class="fa-solid fa-envelope"></i><span>fa-envelope</span></div>
+            <div class="xia-icon-card xia-c-green"><i class="fa-solid fa-camera"></i><span>fa-camera</span></div>
+            <div class="xia-icon-card xia-c-red"><i class="fa-solid fa-thumbs-up"></i><span>fa-thumbs-up</span></div>
+            <div class="xia-icon-card xia-c-blue"><i class="fa-solid fa-cloud"></i><span>fa-cloud</span></div>
+            <div class="xia-icon-card xia-c-yellow"><i class="fa-solid fa-sun"></i><span>fa-sun</span></div>
+            <div class="xia-icon-card xia-c-orange"><i class="fa-solid fa-music"></i><span>fa-music</span></div>
+            <div class="xia-icon-card xia-c-cyan"><i class="fa-solid fa-cart-shopping"></i><span>fa-cart-shopping</span></div>
+            <div class="xia-icon-card xia-c-pink"><i class="fa-solid fa-gamepad"></i><span>fa-gamepad</span></div>
+            <div class="xia-icon-card xia-c-purple"><i class="fa-solid fa-rocket"></i><span>fa-rocket</span></div>
+        </div>
+    </div>
+
+    <div class="xia-section">
+        <h2>品牌图标</h2>
+        <p class="xia-desc">fa-brands 提供常见品牌 Logo 图标</p>
+        <div class="xia-grid">
+            <div class="xia-icon-card xia-c-blue"><i class="fa-brands fa-github"></i><span>fa-github</span></div>
+            <div class="xia-icon-card xia-c-blue"><i class="fa-brands fa-weixin"></i><span>fa-weixin</span></div>
+            <div class="xia-icon-card xia-c-cyan"><i class="fa-brands fa-qq"></i><span>fa-qq</span></div>
+            <div class="xia-icon-card xia-c-red"><i class="fa-brands fa-weibo"></i><span>fa-weibo</span></div>
+            <div class="xia-icon-card xia-c-blue"><i class="fa-brands fa-twitter"></i><span>fa-twitter</span></div>
+            <div class="xia-icon-card xia-c-purple"><i class="fa-brands fa-facebook"></i><span>fa-facebook</span></div>
+            <div class="xia-icon-card xia-c-orange"><i class="fa-brands fa-firefox"></i><span>fa-firefox</span></div>
+            <div class="xia-icon-card xia-c-green"><i class="fa-brands fa-chrome"></i><span>fa-chrome</span></div>
+            <div class="xia-icon-card xia-c-pink"><i class="fa-brands fa-instagram"></i><span>fa-instagram</span></div>
+            <div class="xia-icon-card xia-c-red"><i class="fa-brands fa-youtube"></i><span>fa-youtube</span></div>
+            <div class="xia-icon-card xia-c-blue"><i class="fa-brands fa-linux"></i><span>fa-linux</span></div>
+            <div class="xia-icon-card xia-c-purple"><i class="fa-brands fa-windows"></i><span>fa-windows</span></div>
+        </div>
+    </div>
+
+    <div class="xia-section">
+        <h2>交互演示</h2>
+        <p class="xia-desc">点击大图标切换颜色，或点击下方按钮</p>
+        <div class="xia-demo-box">
+            <i class="fa-solid fa-heart xia-demo-icon" id="xiaDemoIcon"></i>
+            <div class="xia-btn-group">
+                <button class="xia-btn xia-btn-red" onclick="xiaSetColor('#e74c3c')">红色</button>
+                <button class="xia-btn xia-btn-green" onclick="xiaSetColor('#2ecc71')">绿色</button>
+                <button class="xia-btn xia-btn-blue" onclick="xiaSetColor('#3498db')">蓝色</button>
+                <button class="xia-btn xia-btn-purple" onclick="xiaSetColor('#9b59b6')">紫色</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="xia-author">
+        作者：<span>夏志远</span>
+    </div>
+
+    <script>
+        const xiaDemoIcon = document.getElementById('xiaDemoIcon');
+        const xiaColors = ['#e74c3c', '#2ecc71', '#3498db', '#9b59b6'];
+        let xiaColorIndex = 0;
+
+        function xiaSetColor(xiaColor) {
+            xiaDemoIcon.style.color = xiaColor;
+        }
+
+        xiaDemoIcon.addEventListener('click', function() {
+            xiaColorIndex = (xiaColorIndex + 1) % xiaColors.length;
+            xiaDemoIcon.style.color = xiaColors[xiaColorIndex];
+        });
+    </script>
+</body>
+</html>

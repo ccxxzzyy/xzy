@@ -1,0 +1,350 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>13-2 Lucide SVG 图标</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #1e1e1e;
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        .xia-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(30, 30, 30, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #333;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .xia-header h1 {
+            font-size: 1.5rem;
+        }
+
+        .xia-home-link {
+            color: #1abc9c;
+            text-decoration: none;
+            font-size: 0.95rem;
+            border: 1px solid #1abc9c;
+            padding: 0.4rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .xia-home-link:hover {
+            background: #1abc9c;
+            color: #fff;
+        }
+
+        .xia-section {
+            padding: 3rem 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            border-bottom: 1px solid #333;
+        }
+
+        .xia-section h2 {
+            font-size: 1.6rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .xia-section .xia-desc {
+            color: #888;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .xia-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: 1rem;
+        }
+
+        .xia-icon-card {
+            background: #2a2a2a;
+            border: 1px solid #3a3a3a;
+            border-radius: 12px;
+            padding: 1.2rem 0.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .xia-icon-card:hover {
+            border-color: #1abc9c;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(26, 188, 156, 0.25);
+        }
+
+        .xia-icon-card svg {
+            width: 28px;
+            height: 28px;
+            stroke-width: 2;
+            margin-bottom: 0.6rem;
+            transition: all 0.3s;
+        }
+
+        .xia-icon-card:hover svg {
+            transform: scale(1.2);
+        }
+
+        .xia-icon-card span {
+            display: block;
+            font-size: 0.75rem;
+            color: #999;
+            word-break: break-all;
+            margin-top: 0.4rem;
+        }
+
+        .xia-c-red svg { stroke: #e74c3c; }
+        .xia-c-green svg { stroke: #2ecc71; }
+        .xia-c-blue svg { stroke: #3498db; }
+        .xia-c-yellow svg { stroke: #f1c40f; }
+        .xia-c-purple svg { stroke: #9b59b6; }
+        .xia-c-orange svg { stroke: #e67e22; }
+        .xia-c-pink svg { stroke: #ff6b9d; }
+        .xia-c-cyan svg { stroke: #1abc9c; }
+
+        .xia-demo-box {
+            background: #2a2a2a;
+            border: 1px solid #3a3a3a;
+            border-radius: 14px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .xia-demo-icon {
+            width: 80px;
+            height: 80px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .xia-demo-icon:hover {
+            transform: scale(1.3) rotate(10deg);
+        }
+
+        .xia-btn-group {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 0.8rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .xia-btn {
+            padding: 0.55rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            color: #fff;
+            transition: transform 0.2s;
+        }
+
+        .xia-btn:hover {
+            transform: scale(1.08);
+        }
+
+        .xia-btn-red { background: #e74c3c; }
+        .xia-btn-green { background: #2ecc71; }
+        .xia-btn-blue { background: #3498db; }
+        .xia-btn-purple { background: #9b59b6; }
+
+        .xia-size-row {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .xia-compare {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .xia-compare-item {
+            background: #2a2a2a;
+            border: 1px solid #3a3a3a;
+            border-radius: 12px;
+            padding: 1.5rem 2.5rem;
+            text-align: center;
+        }
+
+        .xia-compare-item svg {
+            width: 48px;
+            height: 48px;
+            display: block;
+            margin: 0 auto 0.5rem;
+        }
+
+        .xia-compare-item p {
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .xia-usage-box {
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            font-family: Consolas, monospace;
+            font-size: 0.85rem;
+            line-height: 1.9;
+            color: #2ecc71;
+            overflow-x: auto;
+        }
+
+        .xia-usage-box .xia-code-comment {
+            color: #666;
+        }
+
+        .xia-usage-box .xia-code-tag {
+            color: #e74c3c;
+        }
+
+        .xia-usage-box .xia-code-attr {
+            color: #f1c40f;
+        }
+
+        .xia-author {
+            text-align: center;
+            padding: 2rem;
+            background: #111;
+            color: #888;
+        }
+
+        .xia-author span {
+            color: #ffd700;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="xia-header">
+        <h1>13-2 Lucide SVG 图标</h1>
+        <a href="index.html" class="xia-home-link">返回首页</a>
+    </div>
+
+    <div class="xia-section">
+        <h2>SVG 图标演示</h2>
+        <p class="xia-desc">Lucide 通过 JavaScript 将 &lt;i&gt; 标签替换为内联 SVG，图标本质是矢量图形，可用 CSS 精确控制颜色与大小</p>
+        <div class="xia-compare">
+            <div class="xia-compare-item">
+                <i data-lucide="heart" style="stroke:#e74c3c"></i>
+                <p>data-lucide="heart"</p>
+            </div>
+            <div class="xia-compare-item">
+                <i data-lucide="star" style="stroke:#f1c40f"></i>
+                <p>data-lucide="star"</p>
+            </div>
+            <div class="xia-compare-item">
+                <i data-lucide="zap" style="stroke:#9b59b6"></i>
+                <p>data-lucide="zap"</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="xia-section">
+        <h2>尺寸缩放</h2>
+        <p class="xia-desc">SVG 矢量图形任意缩放不丢失清晰度，宽高通过 width/height 属性控制</p>
+        <div class="xia-size-row">
+            <i data-lucide="heart" style="stroke:#e74c3c;width:16px;height:16px"></i>
+            <i data-lucide="heart" style="stroke:#e74c3c;width:24px;height:24px"></i>
+            <i data-lucide="heart" style="stroke:#e74c3c;width:36px;height:36px"></i>
+            <i data-lucide="heart" style="stroke:#e74c3c;width:52px;height:52px"></i>
+            <i data-lucide="heart" style="stroke:#e74c3c;width:72px;height:72px"></i>
+        </div>
+    </div>
+
+    <div class="xia-section">
+        <h2>常用图标</h2>
+        <p class="xia-desc">页面加载时 lucide.createIcons() 自动将 data-lucide 元素替换为内联 SVG</p>
+        <div class="xia-grid">
+            <div class="xia-icon-card xia-c-red"><i data-lucide="heart"></i><span>heart</span></div>
+            <div class="xia-icon-card xia-c-green"><i data-lucide="star"></i><span>star</span></div>
+            <div class="xia-icon-card xia-c-blue"><i data-lucide="user"></i><span>user</span></div>
+            <div class="xia-icon-card xia-c-yellow"><i data-lucide="bell"></i><span>bell</span></div>
+            <div class="xia-icon-card xia-c-purple"><i data-lucide="settings"></i><span>settings</span></div>
+            <div class="xia-icon-card xia-c-orange"><i data-lucide="home"></i><span>home</span></div>
+            <div class="xia-icon-card xia-c-pink"><i data-lucide="search"></i><span>search</span></div>
+            <div class="xia-icon-card xia-c-cyan"><i data-lucide="mail"></i><span>mail</span></div>
+            <div class="xia-icon-card xia-c-green"><i data-lucide="camera"></i><span>camera</span></div>
+            <div class="xia-icon-card xia-c-red"><i data-lucide="thumbs-up"></i><span>thumbs-up</span></div>
+            <div class="xia-icon-card xia-c-blue"><i data-lucide="cloud"></i><span>cloud</span></div>
+            <div class="xia-icon-card xia-c-yellow"><i data-lucide="sun"></i><span>sun</span></div>
+            <div class="xia-icon-card xia-c-orange"><i data-lucide="music"></i><span>music</span></div>
+            <div class="xia-icon-card xia-c-cyan"><i data-lucide="shopping-cart"></i><span>shopping-cart</span></div>
+            <div class="xia-icon-card xia-c-pink"><i data-lucide="gamepad-2"></i><span>gamepad-2</span></div>
+            <div class="xia-icon-card xia-c-purple"><i data-lucide="rocket"></i><span>rocket</span></div>
+        </div>
+    </div>
+
+    <div class="xia-section">
+        <h2>交互演示</h2>
+        <p class="xia-desc">点击大图标切换描边颜色，或点击下方按钮</p>
+        <div class="xia-demo-box">
+            <i data-lucide="heart" class="xia-demo-icon" id="xiaDemoIcon" style="stroke:#e74c3c"></i>
+            <div class="xia-btn-group">
+                <button class="xia-btn xia-btn-red" onclick="xiaSetStroke('#e74c3c')">红色</button>
+                <button class="xia-btn xia-btn-green" onclick="xiaSetStroke('#2ecc71')">绿色</button>
+                <button class="xia-btn xia-btn-blue" onclick="xiaSetStroke('#3498db')">蓝色</button>
+                <button class="xia-btn xia-btn-purple" onclick="xiaSetStroke('#9b59b6')">紫色</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="xia-section">
+        <h2>使用方式</h2>
+        <p class="xia-desc">引入本地 lucide.min.js，用 data-lucide 属性声明图标，createIcons() 自动转换为 SVG</p>
+        <div class="xia-usage-box">
+            <span class="xia-code-comment">&lt;!-- 引入脚本 --&gt;</span><br>
+            <span class="xia-code-tag">&lt;script</span> <span class="xia-code-attr">src=</span><span class="xia-code-attr">"cdn/lucide/lucide.min.js"</span><span class="xia-code-tag">&gt;&lt;/script&gt;</span><br><br>
+            <span class="xia-code-comment">&lt;!-- 声明图标（属性值为图标名） --&gt;</span><br>
+            <span class="xia-code-tag">&lt;i</span> <span class="xia-code-attr">data-lucide=</span><span class="xia-code-attr">"heart"</span><span class="xia-code-tag">&gt;&lt;/i&gt;</span><br>
+            <span class="xia-code-tag">&lt;i</span> <span class="xia-code-attr">data-lucide=</span><span class="xia-code-attr">"star"</span><span class="xia-code-tag">&gt;&lt;/i&gt;</span><br><br>
+            <span class="xia-code-comment">&lt;!-- 页面加载完成后自动替换为内联 SVG --&gt;</span><br>
+            <span class="xia-code-tag">&lt;script&gt;</span>lucide.createIcons();<span class="xia-code-tag">&lt;/script&gt;</span>
+        </div>
+    </div>
+
+    <div class="xia-author">
+        作者：<span>夏志远</span>
+    </div>
+
+    <script src="cdn/lucide/lucide.min.js"></script>
+    <script>
+        lucide.createIcons();
+
+        const xiaDemoIcon = document.getElementById('xiaDemoIcon');
+        const xiaStrokes = ['#e74c3c', '#2ecc71', '#3498db', '#9b59b6'];
+        let xiaStrokeIndex = 0;
+
+        function xiaSetStroke(xiaStroke) {
+            xiaDemoIcon.style.stroke = xiaStroke;
+        }
+
+        xiaDemoIcon.addEventListener('click', function() {
+            xiaStrokeIndex = (xiaStrokeIndex + 1) % xiaStrokes.length;
+            xiaDemoIcon.style.stroke = xiaStrokes[xiaStrokeIndex];
+        });
+    </script>
+</body>
+</html>
