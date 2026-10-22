@@ -1,0 +1,240 @@
+<!--
+姓名：夏志远
+日期：2026-10-22
+功能：JavaScript 6 种基础数据类型定义与演示
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>14-2 数据类型</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #1a1a2e;
+            color: #eee;
+            padding: 2rem;
+            line-height: 1.8;
+        }
+
+        .xzy_container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .xzy_header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .xzy_header h1 {
+            font-size: 2rem;
+            color: #ffd700;
+        }
+
+        .xzy_header p {
+            color: #aaa;
+            margin-top: 0.5rem;
+        }
+
+        .xzy_type-card {
+            background: #16213e;
+            border-radius: 0.75rem;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid #0f3460;
+        }
+
+        .xzy_type-card h2 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: #e94560;
+        }
+
+        .xzy_type-card h2 .xzy_tag {
+            display: inline-block;
+            background: #e94560;
+            color: #fff;
+            padding: 0.1rem 0.6rem;
+            border-radius: 0.25rem;
+            font-size: 0.85rem;
+            margin-left: 0.5rem;
+            font-weight: normal;
+        }
+
+        .xzy_type-card p {
+            color: #bbb;
+            margin-bottom: 0.5rem;
+        }
+
+        .xzy_code {
+            background: #0a0a1a;
+            color: #7df9ff;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            font-family: "Consolas", monospace;
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+            white-space: pre-wrap;
+        }
+
+        .xzy_result {
+            background: #0f3460;
+            color: #ffd700;
+            padding: 0.6rem 1rem;
+            border-radius: 0.5rem;
+            font-family: "Consolas", monospace;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .xzy_result span {
+            color: #7df9ff;
+        }
+
+        .xzy_nav {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .xzy_nav a {
+            color: #7df9ff;
+            text-decoration: none;
+            border: 1px solid #7df9ff;
+            padding: 0.5rem 1.25rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .xzy_nav a:hover {
+            background: #7df9ff;
+            color: #1a1a2e;
+        }
+    </style>
+</head>
+<body>
+    <div class="xzy_container">
+        <div class="xzy_header">
+            <h1>JavaScript 6 种基础数据类型</h1>
+            <p>点击下方按钮查看每一种类型的运行结果</p>
+        </div>
+
+        <!-- 1. String -->
+        <div class="xzy_type-card">
+            <h2>1. String <span class="xzy_tag">字符串</span></h2>
+            <p>由引号包裹的文本，可以用单引号、双引号或反引号定义</p>
+            <div class="xzy_code">let xzy_str1 = "Hello";
+let xzy_str2 = 'World';
+let xzy_str3 = `模板字符串 ${xzy_str1}`;</div>
+            <div id="xzy_result_string" class="xzy_result"></div>
+        </div>
+
+        <!-- 2. Number -->
+        <div class="xzy_type-card">
+            <h2>2. Number <span class="xzy_tag">数字</span></h2>
+            <p>包括整数和浮点数，还有特殊值 NaN 和 Infinity</p>
+            <div class="xzy_code">let xzy_num1 = 42;
+let xzy_num2 = 3.14;
+let xzy_num3 = NaN;
+let xzy_num4 = Infinity;</div>
+            <div id="xzy_result_number" class="xzy_result"></div>
+        </div>
+
+        <!-- 3. Boolean -->
+        <div class="xzy_type-card">
+            <h2>3. Boolean <span class="xzy_tag">布尔</span></h2>
+            <p>只有两个值：true（真）和 false（假）</p>
+            <div class="xzy_code">let xzy_bool1 = true;
+let xzy_bool2 = false;</div>
+            <div id="xzy_result_boolean" class="xzy_result"></div>
+        </div>
+
+        <!-- 4. Null -->
+        <div class="xzy_type-card">
+            <h2>4. Null <span class="xzy_tag">空值</span></h2>
+            <p>表示"什么都没有"，一个故意留空的值（typeof null 返回 "object" 是历史遗留 bug）</p>
+            <div class="xzy_code">let xzy_nullVal = null;</div>
+            <div id="xzy_result_null" class="xzy_result"></div>
+        </div>
+
+        <!-- 5. Undefined -->
+        <div class="xzy_type-card">
+            <h2>5. Undefined <span class="xzy_tag">未定义</span></h2>
+            <p>变量声明了但没有赋值，或者访问不存在的属性</p>
+            <div class="xzy_code">let xzy_undefVal;
+let xzy_obj = {};</div>
+            <div id="xzy_result_undefined" class="xzy_result"></div>
+        </div>
+
+        <!-- 6. Symbol -->
+        <div class="xzy_type-card">
+            <h2>6. Symbol <span class="xzy_tag">符号</span></h2>
+            <p>ES6 新增，每个 Symbol 都是唯一的，常用于对象属性名避免冲突</p>
+            <div class="xzy_code">let xzy_sym1 = Symbol("id");
+let xzy_sym2 = Symbol("id");
+let xzy_symObj = { [xzy_sym1]: "唯一值" };</div>
+            <div id="xzy_result_symbol" class="xzy_result"></div>
+        </div>
+
+        <div class="xzy_nav">
+            <a href="index.html">返回首页</a>
+        </div>
+    </div>
+
+    <script>
+        (function xzy_init() {
+            // 1. String
+            let xzy_str1 = "Hello";
+            let xzy_str2 = 'World';
+            let xzy_str3 = `模板字符串 ${xzy_str1}`;
+            document.getElementById("xzy_result_string").innerHTML =
+                '<span>typeof</span> "' + xzy_str1 + '" → ' + typeof xzy_str1 + '<br>' +
+                '<span>typeof</span> \'' + xzy_str2 + '\' → ' + typeof xzy_str2 + '<br>' +
+                '<span>模板字符串</span> → ' + xzy_str3;
+
+            // 2. Number
+            let xzy_num1 = 42;
+            let xzy_num2 = 3.14;
+            let xzy_num3 = NaN;
+            let xzy_num4 = Infinity;
+            document.getElementById("xzy_result_number").innerHTML =
+                '<span>typeof</span> 42 → ' + typeof xzy_num1 + '<br>' +
+                '<span>typeof</span> 3.14 → ' + typeof xzy_num2 + '<br>' +
+                '<span>typeof</span> NaN → ' + typeof xzy_num3 + '  <span>NaN === NaN →</span> ' + (xzy_num3 === xzy_num3) + '<br>' +
+                '<span>typeof</span> Infinity → ' + typeof xzy_num4;
+
+            // 3. Boolean
+            let xzy_bool1 = true;
+            let xzy_bool2 = false;
+            document.getElementById("xzy_result_boolean").innerHTML =
+                '<span>typeof</span> true → ' + typeof xzy_bool1 + '  值: ' + xzy_bool1 + '<br>' +
+                '<span>typeof</span> false → ' + typeof xzy_bool2 + '  值: ' + xzy_bool2;
+
+            // 4. Null
+            let xzy_nullVal = null;
+            document.getElementById("xzy_result_null").innerHTML =
+                '<span>typeof</span> null → ' + typeof xzy_nullVal + ' <span style="color:#e94560">(历史遗留 bug)</span><br>' +
+                '<span>null === null →</span> ' + (null === null) + '<br>' +
+                '<span>null == undefined →</span> ' + (null == undefined);
+
+            // 5. Undefined
+            let xzy_undefVal;
+            let xzy_obj = {};
+            document.getElementById("xzy_result_undefined").innerHTML =
+                '<span>typeof</span> 未赋值变量 → ' + typeof xzy_undefVal + '  值: ' + xzy_undefVal + '<br>' +
+                '<span>typeof</span> 访问不存在属性 obj.x → ' + typeof xzy_obj.x + '  值: ' + xzy_obj.x;
+
+            // 6. Symbol
+            let xzy_sym1 = Symbol("id");
+            let xzy_sym2 = Symbol("id");
+            let xzy_symObj = { [xzy_sym1]: "唯一值" };
+            document.getElementById("xzy_result_symbol").innerHTML =
+                '<span>typeof</span> Symbol() → ' + typeof xzy_sym1 + '<br>' +
+                '<span>Symbol("id") === Symbol("id") →</span> ' + (xzy_sym1 === xzy_sym2) + ' (每个 Symbol 都是唯一的)<br>' +
+                '<span>obj[Symbol] →</span> ' + xzy_symObj[xzy_sym1];
+        })();
+    </script>
+</body>
+</html>
