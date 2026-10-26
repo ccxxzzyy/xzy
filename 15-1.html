@@ -1,0 +1,298 @@
+<!--
+姓名：夏志远
+日期：2026-10-26
+功能：HTML+CSS 三个典型布局设计（上图下文卡片 / 左图右文列表 / 图标导航栏）
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>15-1 典型布局设计</title>
+    <link rel="stylesheet" href="font/font_5244859_igt0lytephh/iconfont.css">
+    <style>
+        /* ========== 全局公共 CSS ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .xzy_page {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .xzy_section-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #222;
+            margin: 40px 0 20px;
+            padding-left: 12px;
+            border-left: 4px solid #ff6b6b;
+        }
+
+        .xzy_section-title::before {
+            content: "布局 ";
+            font-size: 14px;
+            color: #ff6b6b;
+            letter-spacing: 2px;
+        }
+
+        .xzy_nav-top {
+            margin-bottom: 20px;
+        }
+
+        .xzy_nav-top a {
+            color: #666;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .xzy_nav-top a:hover {
+            color: #ff6b6b;
+        }
+
+        /* ========== 布局一：上图下文卡片 ========== */
+        .xzy_card-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .xzy_card {
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .xzy_card-img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .xzy_card-body {
+            padding: 12px 14px;
+        }
+
+        .xzy_card-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #222;
+            margin-bottom: 6px;
+        }
+
+        .xzy_card-desc {
+            font-size: 13px;
+            color: #888;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* ========== 布局二：左图右文列表 ========== */
+        .xzy_list {
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .xzy_list-item {
+            display: flex;
+            padding: 14px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .xzy_list-item:last-child {
+            border-bottom: none;
+        }
+
+        .xzy_list-img {
+            width: 96px;
+            height: 96px;
+            object-fit: cover;
+            border-radius: 6px;
+            flex-shrink: 0;
+            margin-right: 14px;
+        }
+
+        .xzy_list-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .xzy_list-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #222;
+            margin-bottom: 4px;
+        }
+
+        .xzy_list-desc {
+            font-size: 13px;
+            color: #666;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 6px;
+        }
+
+        .xzy_list-meta {
+            display: flex;
+            gap: 14px;
+            font-size: 12px;
+            color: #aaa;
+        }
+
+        /* ========== 布局三：图标导航栏 ========== */
+        .xzy_nav-bar {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            display: flex;
+            padding: 0 16px;
+        }
+
+        .xzy_nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 14px 0;
+            color: #999;
+            font-size: 12px;
+            text-decoration: none;
+        }
+
+        .xzy_nav-item .iconfont {
+            font-size: 22px;
+            margin-bottom: 4px;
+        }
+
+        .xzy_nav-item.xzy_active {
+            color: #ff6b6b;
+        }
+    </style>
+</head>
+<body>
+    <div class="xzy_page">
+        <div class="xzy_nav-top">
+            <a href="index.html">← 返回首页</a>
+        </div>
+
+        <!-- ========== 布局一：上图下文卡片 ========== -->
+        <h2 class="xzy_section-title">上图下文卡片</h2>
+        <div class="xzy_card-grid">
+            <div class="xzy_card">
+                <img class="xzy_card-img" src="img/1.jpg" alt="图片1">
+                <div class="xzy_card-body">
+                    <div class="xzy_card-title">自然风光</div>
+                    <div class="xzy_card-desc">湖光山色，让人心旷神怡。</div>
+                </div>
+            </div>
+            <div class="xzy_card">
+                <img class="xzy_card-img" src="img/2.jpg" alt="图片2">
+                <div class="xzy_card-body">
+                    <div class="xzy_card-title">城市街景</div>
+                    <div class="xzy_card-desc">繁华都市，每一个角落都有故事。</div>
+                </div>
+            </div>
+            <div class="xzy_card">
+                <img class="xzy_card-img" src="img/3.jpg" alt="图片3">
+                <div class="xzy_card-body">
+                    <div class="xzy_card-title">人文建筑</div>
+                    <div class="xzy_card-desc">古老与现代，在建筑中交汇。</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== 布局二：左图右文列表 ========== -->
+        <h2 class="xzy_section-title">左图右文列表</h2>
+        <div class="xzy_list">
+            <div class="xzy_list-item">
+                <img class="xzy_list-img" src="img/4.jpg" alt="图片4">
+                <div class="xzy_list-body">
+                    <div>
+                        <div class="xzy_list-title">秋日的午后</div>
+                        <div class="xzy_list-desc">阳光透过树叶洒在地面上，形成斑驳的光影，微风轻拂，带来一丝凉意。</div>
+                    </div>
+                    <div class="xzy_list-meta">
+                        <span>夏志远</span>
+                        <span>2026-10-20</span>
+                        <span><i class="iconfont icon-dianzan"></i> 128</span>
+                    </div>
+                </div>
+            </div>
+            <div class="xzy_list-item">
+                <img class="xzy_list-img" src="img/5.jpg" alt="图片5">
+                <div class="xzy_list-body">
+                    <div>
+                        <div class="xzy_list-title">海边的清晨</div>
+                        <div class="xzy_list-desc">海浪轻轻拍打着沙滩，远处的渔船渐渐出现在地平线上。</div>
+                    </div>
+                    <div class="xzy_list-meta">
+                        <span>夏志远</span>
+                        <span>2026-10-18</span>
+                        <span><i class="iconfont icon-shoucang"></i> 56</span>
+                    </div>
+                </div>
+            </div>
+            <div class="xzy_list-item">
+                <img class="xzy_list-img" src="img/6.jpg" alt="图片6">
+                <div class="xzy_list-body">
+                    <div>
+                        <div class="xzy_list-title">山间小径</div>
+                        <div class="xzy_list-desc">蜿蜒的小路通向山顶，两旁是茂密的松林，鸟鸣声此起彼伏。</div>
+                    </div>
+                    <div class="xzy_list-meta">
+                        <span>夏志远</span>
+                        <span>2026-10-15</span>
+                        <span><i class="iconfont icon-dianzan"></i> 203</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== 布局三：图标导航栏 ========== -->
+        <h2 class="xzy_section-title">图标导航栏</h2>
+        <nav class="xzy_nav-bar">
+            <a class="xzy_nav-item xzy_active" href="#">
+                <i class="iconfont icon-shouye1"></i>
+                <span>首页</span>
+            </a>
+            <a class="xzy_nav-item" href="#">
+                <i class="iconfont icon-faxian"></i>
+                <span>发现</span>
+            </a>
+            <a class="xzy_nav-item" href="#">
+                <i class="iconfont icon-shangcheng"></i>
+                <span>商城</span>
+            </a>
+            <a class="xzy_nav-item" href="#">
+                <i class="iconfont icon-shoucang"></i>
+                <span>收藏</span>
+            </a>
+            <a class="xzy_nav-item" href="#">
+                <i class="iconfont icon-wode"></i>
+                <span>我的</span>
+            </a>
+        </nav>
+    </div>
+</body>
+</html>

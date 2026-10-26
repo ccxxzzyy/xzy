@@ -1,0 +1,157 @@
+<!--
+姓名：夏志远
+日期：2026-10-26
+功能：数7游戏 - 100个盒子，7的倍数/末尾含7/包含7的数显示为空盒子
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>15-2 数7游戏</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #1a1a2e;
+            color: #eee;
+            min-height: 100vh;
+            padding: 30px 20px;
+        }
+
+        .xzy_container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .xzy_header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .xzy_header h1 {
+            font-size: 28px;
+            color: #ffd700;
+            margin-bottom: 8px;
+        }
+
+        .xzy_header p {
+            font-size: 14px;
+            color: #aaa;
+            line-height: 1.8;
+        }
+
+        .xzy_rule {
+            background: #16213e;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #bbb;
+        }
+
+        .xzy_rule span {
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+
+        .xzy_grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 6px;
+            background: #16213e;
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .xzy_cell {
+            aspect-ratio: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #0f3460;
+            color: #ffd700;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 4px;
+            font-family: "Consolas", monospace;
+        }
+
+        .xzy_cell.xzy_empty {
+            background: #e94560;
+            color: transparent;
+        }
+
+        .xzy_footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #ffd700;
+        }
+
+        .xzy_nav {
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .xzy_nav a {
+            color: #7df9ff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .xzy_nav a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="xzy_container">
+        <div class="xzy_header">
+            <h1>数7游戏</h1>
+            <p>规则：遇到以下数字显示为空盒子（红色），其他显示数字</p>
+        </div>
+
+        <div class="xzy_rule">
+            <span>满足规则的条件（任一即可）：</span><br>
+            ① 7 的倍数（如 7、14、21…）<br>
+            ② 末尾是 7（如 7、17、27…）<br>
+            ③ 包含数字 7（如 70、71、77…）
+        </div>
+
+        <div id="xzy_grid" class="xzy_grid"></div>
+
+        <p class="xzy_footer">夏志远</p>
+        <div class="xzy_nav">
+            <a href="index.html">← 返回首页</a>
+        </div>
+    </div>
+
+    <script>
+        function xzy_isSpecial(xzy_num) {
+            if (xzy_num % 7 === 0) return true;
+            if (xzy_num % 10 === 7) return true;
+            if (String(xzy_num).indexOf("7") !== -1) return true;
+            return false;
+        }
+
+        (function xzy_init() {
+            var xzy_grid = document.getElementById("xzy_grid");
+            var xzy_html = "";
+            for (var xzy_i = 1; xzy_i <= 100; xzy_i++) {
+                if (xzy_isSpecial(xzy_i)) {
+                    xzy_html += '<div class="xzy_cell xzy_empty"></div>';
+                } else {
+                    xzy_html += '<div class="xzy_cell">' + xzy_i + '</div>';
+                }
+            }
+            xzy_grid.innerHTML = xzy_html;
+        })();
+    </script>
+</body>
+</html>
