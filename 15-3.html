@@ -1,0 +1,385 @@
+<!--
+姓名：夏志远
+日期：2026-10-26
+功能：JavaScript 程序结构 - 条件语句与循环语句演示
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>15-3 JS 条件与循环</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #0f0f23;
+            color: #eee;
+            padding: 30px 20px;
+            min-height: 100vh;
+        }
+
+        .xzy_container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .xzy_header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .xzy_header h1 {
+            font-size: 28px;
+            color: #ffd700;
+        }
+
+        .xzy_header p {
+            color: #aaa;
+            margin-top: 8px;
+            font-size: 14px;
+        }
+
+        .xzy_section {
+            background: #16213e;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #e94560;
+        }
+
+        .xzy_section h2 {
+            font-size: 18px;
+            color: #e94560;
+            margin-bottom: 12px;
+        }
+
+        .xzy_section h2 .xzy_tag {
+            display: inline-block;
+            background: #e94560;
+            color: #fff;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-left: 8px;
+            font-weight: normal;
+        }
+
+        .xzy_code {
+            background: #0a0a1a;
+            color: #7df9ff;
+            padding: 12px 14px;
+            border-radius: 6px;
+            font-family: "Consolas", monospace;
+            font-size: 13px;
+            margin-bottom: 12px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+
+        .xzy_output {
+            background: #0f3460;
+            color: #ffd700;
+            padding: 12px 14px;
+            border-radius: 6px;
+            font-family: "Consolas", monospace;
+            font-size: 13px;
+            line-height: 1.8;
+            min-height: 40px;
+        }
+
+        .xzy_output .xzy_label {
+            color: #aaa;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        .xzy_output span {
+            color: #7df9ff;
+        }
+
+        .xzy_output .xzy_true { color: #2ecc71; }
+        .xzy_output .xzy_false { color: #e74c3c; }
+
+        .xzy_grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 4px;
+            margin-top: 8px;
+        }
+
+        .xzy_grid .xzy_cell {
+            aspect-ratio: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 11px;
+            font-weight: bold;
+            border-radius: 3px;
+        }
+
+        .xzy_nav {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .xzy_nav a {
+            color: #7df9ff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .xzy_author {
+            text-align: center;
+            margin-top: 16px;
+            color: #ffd700;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="xzy_container">
+        <div class="xzy_header">
+            <h1>JavaScript 条件与循环</h1>
+            <p>程序的控制结构：条件判断 + 循环迭代</p>
+        </div>
+
+        <!-- ========== 条件语句 ========== -->
+
+        <div class="xzy_section">
+            <h2>1. if...else <span class="xzy_tag">条件</span></h2>
+            <div class="xzy_code">var xzy_score = 85;
+if (xzy_score >= 90) {
+    xzy_grade = "优秀";
+} else if (xzy_score >= 80) {
+    xzy_grade = "良好";
+} else if (xzy_score >= 60) {
+    xzy_grade = "及格";
+} else {
+    xzy_grade = "不及格";
+}</div>
+            <div id="xzy_out_if" class="xzy_output"></div>
+        </div>
+
+        <div class="xzy_section">
+            <h2>2. switch <span class="xzy_tag">条件</span></h2>
+            <div class="xzy_code">var xzy_day = new Date().getDay();
+switch (xzy_day) {
+    case 0: xzy_name = "星期日"; break;
+    case 1: xzy_name = "星期一"; break;
+    case 2: xzy_name = "星期二"; break;
+    case 3: xzy_name = "星期三"; break;
+    case 4: xzy_name = "星期四"; break;
+    case 5: xzy_name = "星期五"; break;
+    case 6: xzy_name = "星期六"; break;
+}</div>
+            <div id="xzy_out_switch" class="xzy_output"></div>
+        </div>
+
+        <div class="xzy_section">
+            <h2>3. 三元运算符 <span class="xzy_tag">条件</span></h2>
+            <div class="xzy_code">var xzy_age = 20;
+var xzy_status = (xzy_age >= 18) ? "成年" : "未成年";
+
+var xzy_num = 7;
+var xzy_parity = (xzy_num % 2 === 0) ? "偶数" : "奇数";</div>
+            <div id="xzy_out_ternary" class="xzy_output"></div>
+        </div>
+
+        <!-- ========== 循环语句 ========== -->
+
+        <div class="xzy_section">
+            <h2>4. for 循环 <span class="xzy_tag">循环</span></h2>
+            <div class="xzy_code">// 计算 1~10 的和
+var xzy_sum = 0;
+for (var xzy_i = 1; xzy_i <= 10; xzy_i++) {
+    xzy_sum += xzy_i;
+}
+
+// for 循环打印乘法口诀
+var xzy_koujue = "";
+for (var xzy_a = 1; xzy_a <= 9; xzy_a++) {
+    for (var xzy_b = 1; xzy_b <= xzy_a; xzy_b++) {
+        xzy_koujue += xzy_b + "×" + xzy_a + "=" + (xzy_a * xzy_b) + " ";
+    }
+    xzy_koujue += "\n";
+}</div>
+            <div id="xzy_out_for" class="xzy_output"></div>
+        </div>
+
+        <div class="xzy_section">
+            <h2>5. while 循环 <span class="xzy_tag">循环</span></h2>
+            <div class="xzy_code">// 数7游戏：1~30，跳过含7的数和7的倍数
+var xzy_n = 1;
+var xzy_count = 0;
+var xzy_result = "";
+while (xzy_n <= 30) {
+    if (xzy_n % 7 === 0 || xzy_n % 10 === 7 || String(xzy_n).indexOf("7") !== -1) {
+        xzy_result += "[" + xzy_n + "] ";
+        xzy_count++;
+    } else {
+        xzy_result += xzy_n + " ";
+    }
+    xzy_n++;
+}</div>
+            <div id="xzy_out_while" class="xzy_output"></div>
+            <div id="xzy_out_grid" class="xzy_grid"></div>
+        </div>
+
+        <div class="xzy_section">
+            <h2>6. do...while 循环 <span class="xzy_tag">循环</span></h2>
+            <div class="xzy_code">// 至少执行一次
+var xzy_i = 0;
+var xzy_do_result = "";
+do {
+    xzy_do_result += xzy_i + " ";
+    xzy_i += 2;
+} while (xzy_i < 10);</div>
+            <div id="xzy_out_do" class="xzy_output"></div>
+        </div>
+
+        <div class="xzy_section">
+            <h2>7. for...of 遍历数组 <span class="xzy_tag">循环</span></h2>
+            <div class="xzy_code">var xzy_arr = ["苹果", "香蕉", "橘子", "葡萄"];
+var xzy_fruits = "";
+for (var xzy_f of xzy_arr) {
+    xzy_fruits += xzy_f + "  ";
+}
+
+// break 遇到 "橘子" 就跳出
+var xzy_break_demo = "";
+for (var xzy_f of xzy_arr) {
+    if (xzy_f === "橘子") break;
+    xzy_break_demo += xzy_f + " ";
+}
+
+// continue 跳过 "香蕉"
+var xzy_continue_demo = "";
+for (var xzy_f of xzy_arr) {
+    if (xzy_f === "香蕉") continue;
+    xzy_continue_demo += xzy_f + " ";
+}</div>
+            <div id="xzy_out_forof" class="xzy_output"></div>
+        </div>
+
+        <p class="xzy_author">夏志远</p>
+        <div class="xzy_nav">
+            <a href="index.html">← 返回首页</a>
+        </div>
+    </div>
+
+    <script>
+        (function xzy_runAll() {
+            // === 1. if...else ===
+            var xzy_score = 85;
+            var xzy_grade;
+            if (xzy_score >= 90) {
+                xzy_grade = "优秀";
+            } else if (xzy_score >= 80) {
+                xzy_grade = "良好";
+            } else if (xzy_score >= 60) {
+                xzy_grade = "及格";
+            } else {
+                xzy_grade = "不及格";
+            }
+            document.getElementById("xzy_out_if").innerHTML =
+                '<span>分数</span> ' + xzy_score + ' → <span>等级</span> <b>' + xzy_grade + '</b>';
+
+            // === 2. switch ===
+            var xzy_day = new Date().getDay();
+            var xzy_name;
+            switch (xzy_day) {
+                case 0: xzy_name = "星期日"; break;
+                case 1: xzy_name = "星期一"; break;
+                case 2: xzy_name = "星期二"; break;
+                case 3: xzy_name = "星期三"; break;
+                case 4: xzy_name = "星期四"; break;
+                case 5: xzy_name = "星期五"; break;
+                case 6: xzy_name = "星期六"; break;
+            }
+            document.getElementById("xzy_out_switch").innerHTML =
+                '<span>今天是</span> ' + xzy_name + ' (getDay()=' + xzy_day + ')';
+
+            // === 3. 三元运算符 ===
+            var xzy_age = 20;
+            var xzy_status = (xzy_age >= 18) ? "成年" : "未成年";
+            var xzy_num = 7;
+            var xzy_parity = (xzy_num % 2 === 0) ? "偶数" : "奇数";
+            document.getElementById("xzy_out_ternary").innerHTML =
+                '<span>年龄</span> ' + xzy_age + ' → ' + xzy_status + '<br>' +
+                '<span>数字</span> ' + xzy_num + ' → ' + xzy_parity;
+
+            // === 4. for 循环 ===
+            var xzy_sum = 0;
+            for (var xzy_i = 1; xzy_i <= 10; xzy_i++) {
+                xzy_sum += xzy_i;
+            }
+            var xzy_koujue = "";
+            for (var xzy_a = 1; xzy_a <= 9; xzy_a++) {
+                for (var xzy_b = 1; xzy_b <= xzy_a; xzy_b++) {
+                    xzy_koujue += xzy_b + "×" + xzy_a + "=" + (xzy_a * xzy_b) + " ";
+                }
+                xzy_koujue += "\n";
+            }
+            document.getElementById("xzy_out_for").innerHTML =
+                '<span>1+2+...+10 =</span> ' + xzy_sum + '<br><br>' +
+                '<span>乘法口诀：</span><br>' + xzy_koujue.replace(/\n/g, '<br>');
+
+            // === 5. while 循环 ===
+            var xzy_n = 1;
+            var xzy_count = 0;
+            var xzy_result = "";
+            var xzy_gridHtml = "";
+            while (xzy_n <= 100) {
+                var xzy_isSpecial = (xzy_n % 7 === 0 || xzy_n % 10 === 7 || String(xzy_n).indexOf("7") !== -1);
+                if (xzy_isSpecial) {
+                    xzy_count++;
+                    xzy_gridHtml += '<div class="xzy_cell" style="background:#e94560;color:transparent">x</div>';
+                } else {
+                    xzy_gridHtml += '<div class="xzy_cell" style="background:#0f3460;color:#ffd700">' + xzy_n + '</div>';
+                }
+                xzy_n++;
+            }
+            document.getElementById("xzy_out_while").innerHTML =
+                '<span>1~100 中含7的数：</span>' + xzy_count + ' 个（红色标记）';
+            document.getElementById("xzy_out_grid").innerHTML = xzy_gridHtml;
+
+            // === 6. do...while ===
+            var xzy_j = 0;
+            var xzy_doResult = "";
+            do {
+                xzy_doResult += xzy_j + " ";
+                xzy_j += 2;
+            } while (xzy_j < 10);
+            document.getElementById("xzy_out_do").innerHTML =
+                '<span>偶数：</span>' + xzy_doResult;
+
+            // === 7. for...of ===
+            var xzy_arr = ["苹果", "香蕉", "橘子", "葡萄"];
+            var xzy_all = "";
+            for (var xzy_f of xzy_arr) { xzy_all += xzy_f + " "; }
+
+            var xzy_breakDemo = "";
+            for (var xzy_f of xzy_arr) {
+                if (xzy_f === "橘子") break;
+                xzy_breakDemo += xzy_f + " ";
+            }
+
+            var xzy_continueDemo = "";
+            for (var xzy_f of xzy_arr) {
+                if (xzy_f === "香蕉") continue;
+                xzy_continueDemo += xzy_f + " ";
+            }
+
+            document.getElementById("xzy_out_forof").innerHTML =
+                '<span>全部：</span>' + xzy_all + '<br>' +
+                '<span>遇橘子break：</span>' + xzy_breakDemo + '<br>' +
+                '<span>跳过香蕉continue：</span>' + xzy_continueDemo;
+        })();
+    </script>
+</body>
+</html>
