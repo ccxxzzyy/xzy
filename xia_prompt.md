@@ -98,3 +98,23 @@
 ## 2026-10-27-10-21
 **模型**: deepseek-v4.1-flash-free
 **提示词**: 将文件提交到https://github.com/ccxxzzyy/xzy
+
+---
+## 2026-10-29-15-40
+**模型**: deepseek-v4.1-flash-free
+**提示词**: 编写16-1.html，形象的展示javascript主要的数组方法
+
+---
+## 2026-10-29-15-47
+**模型**: 快速
+**提示词**: 生成16-2.html，形象的展示javascript对象和字符串。
+
+---
+## 2026-10-29-16-01
+**模型**: deepseek-v4.1-flash-free
+**提示词**: 将14-1到16-2都加在index
+
+---
+## 2026-10-29-16-06
+**模型**: deepseek-v4.1-flash-free
+**提示词**: 上传到github

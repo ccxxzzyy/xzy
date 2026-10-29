@@ -1,0 +1,1067 @@
+<!--
+姓名：夏志远
+日期：2026-10-29
+功能：JavaScript 对象与字符串可视化演示
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>16-2 JS 对象与字符串可视化</title>
+    <style>
+        :root {
+            --xzy_bg: #0b0f1a;
+            --xzy_panel: #141b2d;
+            --xzy_panel_deep: #0d1322;
+            --xzy_line: rgba(255, 255, 255, 0.08);
+            --xzy_ink: #e8ecf5;
+            --xzy_muted: #8a94ad;
+            --xzy_teal: #5eead4;
+            --xzy_blue: #60a5fa;
+            --xzy_amber: #fbbf24;
+            --xzy_rose: #fb7185;
+            --xzy_violet: #a78bfa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: radial-gradient(1100px 620px at 15% -12%, #16243d 0%, var(--xzy_bg) 58%) fixed;
+            color: var(--xzy_ink);
+            min-height: 100vh;
+            padding: 34px 18px 70px;
+            line-height: 1.6;
+        }
+
+        .xzy_wrap {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .xzy_back {
+            display: inline-block;
+            text-decoration: none;
+            color: var(--xzy_muted);
+            font-size: 13px;
+            padding: 5px 14px;
+            border: 1px solid var(--xzy_line);
+            border-radius: 999px;
+            transition: 0.2s;
+        }
+
+        .xzy_back:hover {
+            color: var(--xzy_teal);
+            border-color: var(--xzy_teal);
+        }
+
+        .xzy_header h1 {
+            font-size: 30px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin: 20px 0 6px;
+        }
+
+        .xzy_header h1 span {
+            color: var(--xzy_teal);
+        }
+
+        .xzy_header p {
+            font-size: 14px;
+            color: var(--xzy_muted);
+        }
+
+        .xzy_header p b {
+            color: var(--xzy_amber);
+            font-weight: 600;
+        }
+
+        .xzy_panel {
+            margin-top: 26px;
+            background: var(--xzy_panel);
+            border: 1px solid var(--xzy_line);
+            border-radius: 16px;
+            padding: 18px 20px 20px;
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+        }
+
+        .xzy_panel_head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .xzy_panel_title {
+            font-size: 14px;
+            letter-spacing: 1px;
+            color: var(--xzy_muted);
+        }
+
+        .xzy_panel_title::before {
+            content: "";
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: var(--xzy_violet);
+            border-radius: 50%;
+            margin-right: 8px;
+            vertical-align: 1px;
+            box-shadow: 0 0 10px var(--xzy_violet);
+        }
+
+        .xzy_panel_title.xzy_str::before {
+            background: var(--xzy_teal);
+            box-shadow: 0 0 10px var(--xzy_teal);
+        }
+
+        .xzy_reset {
+            margin-left: auto;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 12px;
+            color: var(--xzy_muted);
+            background: transparent;
+            border: 1px solid var(--xzy_line);
+            border-radius: 999px;
+            padding: 5px 14px;
+            transition: 0.2s;
+        }
+
+        .xzy_reset:hover {
+            color: var(--xzy_amber);
+            border-color: var(--xzy_amber);
+        }
+
+        /* ===== 对象：储物柜视图 ===== */
+        .xzy_cabinet {
+            display: flex;
+            gap: 14px;
+            align-items: stretch;
+            padding: 16px;
+            background: var(--xzy_panel_deep);
+            border-radius: 12px;
+            border: 1px dashed rgba(167, 139, 250, 0.3);
+        }
+
+        .xzy_cab_label {
+            writing-mode: vertical-lr;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Consolas, monospace;
+            font-size: 14px;
+            color: var(--xzy_violet);
+            padding: 0 6px;
+            border-right: 2px solid rgba(167, 139, 250, 0.4);
+            border-radius: 2px;
+            letter-spacing: 4px;
+        }
+
+        .xzy_props {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: flex-start;
+            flex: 1;
+        }
+
+        .xzy_prop {
+            min-width: 132px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(167, 139, 250, 0.3);
+            background: linear-gradient(180deg, #241d3f, #1b1730);
+            animation: xzy_pop 0.3s ease;
+        }
+
+        .xzy_prop_key {
+            padding: 4px 12px;
+            font-family: Consolas, monospace;
+            font-size: 11.5px;
+            color: var(--xzy_violet);
+            background: rgba(167, 139, 250, 0.12);
+            border-bottom: 1px solid rgba(167, 139, 250, 0.25);
+        }
+
+        .xzy_prop_val {
+            padding: 9px 12px;
+            font-family: Consolas, monospace;
+            font-size: 16px;
+            color: var(--xzy_ink);
+            word-break: break-all;
+        }
+
+        .xzy_prop_val.xzy_nested {
+            font-size: 13px;
+            color: var(--xzy_amber);
+        }
+
+        .xzy_prop_hot {
+            border-color: var(--xzy_teal);
+            box-shadow: 0 0 0 3px rgba(94, 234, 212, 0.15);
+        }
+
+        .xzy_prop_hot .xzy_prop_key {
+            color: var(--xzy_teal);
+            background: rgba(94, 234, 212, 0.1);
+        }
+
+        /* ===== 字符串：胶片格子视图 ===== */
+        .xzy_film {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-items: flex-end;
+            padding: 16px;
+            background: var(--xzy_panel_deep);
+            border-radius: 12px;
+            border: 1px dashed rgba(94, 234, 212, 0.3);
+        }
+
+        .xzy_quote {
+            font-family: Consolas, monospace;
+            font-size: 22px;
+            color: var(--xzy_teal);
+            align-self: center;
+            padding-bottom: 18px;
+        }
+
+        .xzy_cell {
+            position: relative;
+            min-width: 40px;
+            padding: 12px 4px 22px;
+            border-radius: 8px;
+            text-align: center;
+            background: linear-gradient(180deg, #1e2a44, #182135);
+            border: 1px solid rgba(94, 234, 212, 0.28);
+            font-family: Consolas, monospace;
+            font-size: 17px;
+            color: var(--xzy_ink);
+            animation: xzy_pop 0.3s ease;
+        }
+
+        .xzy_cell_idx {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 2px;
+            font-size: 10px;
+            color: #64708c;
+        }
+
+        .xzy_cell_space {
+            color: var(--xzy_rose);
+            background: linear-gradient(180deg, #2a1e2b, #221724);
+            border-color: rgba(251, 113, 133, 0.35);
+        }
+
+        .xzy_cell_hit {
+            background: linear-gradient(180deg, #134e4a, #0f2f2c);
+            border-color: var(--xzy_teal);
+            box-shadow: 0 0 0 3px rgba(94, 234, 212, 0.14);
+        }
+
+        .xzy_cell_drop {
+            opacity: 0.35;
+        }
+
+        /* ===== 方法按钮 ===== */
+        .xzy_methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .xzy_mbtn {
+            cursor: pointer;
+            font-family: inherit;
+            text-align: left;
+            color: var(--xzy_ink);
+            background: var(--xzy_panel);
+            border: 1px solid var(--xzy_line);
+            border-left: 3px solid var(--xzy_violet);
+            border-radius: 10px;
+            padding: 10px 12px;
+            transition: 0.18s;
+        }
+
+        .xzy_mbtn b {
+            display: block;
+            font-family: Consolas, monospace;
+            font-size: 14.5px;
+            font-weight: 600;
+        }
+
+        .xzy_mbtn small {
+            color: var(--xzy_muted);
+            font-size: 11.5px;
+        }
+
+        .xzy_mbtn:hover {
+            transform: translateY(-2px);
+            background: #1a2337;
+            border-color: rgba(167, 139, 250, 0.5);
+        }
+
+        .xzy_str_zone .xzy_mbtn {
+            border-left-color: var(--xzy_teal);
+        }
+
+        .xzy_str_zone .xzy_mbtn:hover {
+            border-color: rgba(94, 234, 212, 0.5);
+        }
+
+        /* ===== 结果区 ===== */
+        .xzy_result {
+            margin-top: 14px;
+            padding: 18px;
+            background: var(--xzy_panel_deep);
+            border: 1px solid var(--xzy_line);
+            border-radius: 14px;
+        }
+
+        .xzy_result_top {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .xzy_result_name {
+            font-family: Consolas, monospace;
+            font-size: 18px;
+            color: var(--xzy_teal);
+        }
+
+        .xzy_badge {
+            font-size: 11px;
+            padding: 2px 10px;
+            border-radius: 999px;
+            background: rgba(167, 139, 250, 0.12);
+            color: var(--xzy_violet);
+            border: 1px solid rgba(167, 139, 250, 0.35);
+        }
+
+        .xzy_code {
+            font-family: Consolas, monospace;
+            font-size: 13.5px;
+            color: #7dd3fc;
+            background: #0a1020;
+            border-left: 2px solid var(--xzy_teal);
+            border-radius: 8px;
+            padding: 11px 14px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+
+        .xzy_ret {
+            margin-top: 12px;
+            font-size: 13px;
+            color: var(--xzy_muted);
+            font-family: Consolas, monospace;
+        }
+
+        .xzy_ret b {
+            color: var(--xzy_amber);
+            font-size: 15px;
+            font-weight: 600;
+            word-break: break-all;
+        }
+
+        .xzy_steps {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .xzy_step {
+            font-family: Consolas, monospace;
+            font-size: 12px;
+            padding: 3px 10px;
+            border-radius: 999px;
+            color: #a9b4cc;
+            background: #16203a;
+            border: 1px solid var(--xzy_line);
+            animation: xzy_pop 0.24s ease;
+        }
+
+        .xzy_step.xzy_keep {
+            color: var(--xzy_teal);
+            background: rgba(94, 234, 212, 0.08);
+            border-color: rgba(94, 234, 212, 0.4);
+        }
+
+        .xzy_step.xzy_drop {
+            color: var(--xzy_rose);
+            background: rgba(251, 113, 133, 0.07);
+            border-color: rgba(251, 113, 133, 0.35);
+        }
+
+        .xzy_note {
+            margin-top: 12px;
+            font-size: 13px;
+            color: var(--xzy_muted);
+            line-height: 1.8;
+        }
+
+        .xzy_note em {
+            font-style: normal;
+            color: var(--xzy_ink);
+        }
+
+        /* ===== 概念对比卡 ===== */
+        .xzy_compare {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-top: 26px;
+        }
+
+        .xzy_cmp {
+            background: var(--xzy_panel);
+            border: 1px solid var(--xzy_line);
+            border-radius: 12px;
+            padding: 14px 16px;
+            font-size: 13px;
+            color: var(--xzy_muted);
+        }
+
+        .xzy_cmp_head {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            color: var(--xzy_ink);
+            font-weight: 600;
+        }
+
+        .xzy_cmp em {
+            font-style: normal;
+            color: var(--xzy_amber);
+            font-family: Consolas, monospace;
+        }
+
+        .xzy_cmp ul {
+            padding-left: 18px;
+            line-height: 1.9;
+        }
+
+        .xzy_foot {
+            margin-top: 26px;
+            font-size: 12px;
+            color: #5d6883;
+            text-align: center;
+        }
+
+        @keyframes xzy_pop {
+            0% {
+                transform: scale(0.72) translateY(8px);
+                opacity: 0;
+            }
+            60% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .xzy_header h1 {
+                font-size: 24px;
+            }
+
+            .xzy_compare {
+                grid-template-columns: 1fr;
+            }
+
+            .xzy_cab_label {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="xzy_wrap">
+    <a class="xzy_back" href="index.html">← 返回首页</a>
+
+    <header class="xzy_header">
+        <h1>JavaScript <span>对象与字符串</span> 可视化</h1>
+        <p>对象像一排<b>贴着标签的抽屉</b>，字符串像一卷<b>带编号的胶片</b> · 点击按钮观察两者如何被访问和操作</p>
+    </header>
+
+    <!-- 对象区 -->
+    <section class="xzy_panel">
+        <div class="xzy_panel_head">
+            <span class="xzy_panel_title">对象 · 键值对储物柜</span>
+            <button class="xzy_reset" id="xzy_obj_reset" type="button">重置对象</button>
+        </div>
+        <div class="xzy_cabinet">
+            <div class="xzy_cab_label">xzy_student</div>
+            <div class="xzy_props" id="xzy_props"></div>
+        </div>
+        <div class="xzy_methods" id="xzy_obj_methods"></div>
+    </section>
+
+    <!-- 字符串区 -->
+    <section class="xzy_panel xzy_str_zone">
+        <div class="xzy_panel_head">
+            <span class="xzy_panel_title xzy_str">字符串 · 字符胶片卷</span>
+            <button class="xzy_reset" id="xzy_str_reset" type="button">重置字符串</button>
+        </div>
+        <div class="xzy_film" id="xzy_film"></div>
+        <div class="xzy_methods" id="xzy_str_methods"></div>
+    </section>
+
+    <!-- 结果区 -->
+    <section class="xzy_result">
+        <div class="xzy_result_top">
+            <span class="xzy_result_name" id="xzy_result_name">—</span>
+            <span class="xzy_badge" id="xzy_badge">待演示</span>
+        </div>
+        <pre class="xzy_code" id="xzy_code">// 点击上方任意按钮开始演示</pre>
+        <div class="xzy_ret">返回值 = <b id="xzy_ret">—</b></div>
+        <div class="xzy_steps" id="xzy_steps"></div>
+        <p class="xzy_note" id="xzy_note">对象演示会点亮对应的抽屉，字符串演示会点亮命中的胶片格。</p>
+    </section>
+
+    <!-- 概念对比 -->
+    <section class="xzy_compare">
+        <div class="xzy_cmp">
+            <div class="xzy_cmp_head">📦 对象 Object</div>
+            <ul>
+                <li>无序的<em>键值对</em>集合：{ key: value }</li>
+                <li>访问：<em>obj.key</em> 或 <em>obj['key']</em></li>
+                <li>可增删属性：赋值即新增，<em>delete</em> 删除</li>
+                <li>遍历用 <em>for...in</em> / Object.keys()</li>
+            </ul>
+        </div>
+        <div class="xzy_cmp">
+            <div class="xzy_cmp_head">🎞️ 字符串 String</div>
+            <ul>
+                <li>有序的<em>字符序列</em>，下标从 0 开始</li>
+                <li>长度是属性：<em>str.length</em>（不是方法）</li>
+                <li>所有方法都<em>不改原字符串</em>，返回新值</li>
+                <li>模板字符串：<em>`你好, ${name}`</em></li>
+            </ul>
+        </div>
+    </section>
+
+    <p class="xzy_foot">紫色 = 对象操作 ｜ 青色 = 字符串操作 ｜ 字符串里的空格被标红，它同样占一个下标</p>
+</div>
+
+<script>
+(function () {
+    'use strict';
+
+    /* ---------- 数据 ---------- */
+    var xzy_seed = function () {
+        return {
+            name: '夏志远',
+            age: 20,
+            major: '网页设计',
+            score: { html: 92, js: 88 },
+            hobby: ['前端', '篮球']
+        };
+    };
+    var xzy_obj = xzy_seed();
+
+    var xzy_strSeed = 'Hello JavaScript';
+    var xzy_str = xzy_strSeed;
+
+    var xzy_hotKey = null;      // 对象区要点亮哪个键
+    var xzy_hitFrom = null;     // 字符串区点亮的下标区间
+    var xzy_hitTo = null;
+    var xzy_dimFrom = null;     // 变暗的区间（slice 丢弃部分等）
+    var xzy_dimTo = null;
+
+    /* ---------- 元素 ---------- */
+    var xzy_el = {
+        props: document.getElementById('xzy_props'),
+        objMethods: document.getElementById('xzy_obj_methods'),
+        film: document.getElementById('xzy_film'),
+        strMethods: document.getElementById('xzy_str_methods'),
+        objReset: document.getElementById('xzy_obj_reset'),
+        strReset: document.getElementById('xzy_str_reset'),
+        name: document.getElementById('xzy_result_name'),
+        badge: document.getElementById('xzy_badge'),
+        code: document.getElementById('xzy_code'),
+        ret: document.getElementById('xzy_ret'),
+        steps: document.getElementById('xzy_steps'),
+        note: document.getElementById('xzy_note')
+    };
+
+    /* ---------- 工具 ---------- */
+    function xzy_fmt(xzy_v) {
+        if (xzy_v === undefined) { return 'undefined'; }
+        if (xzy_v === null) { return 'null'; }
+        if (Array.isArray(xzy_v)) {
+            return '[' + xzy_v.map(xzy_fmt).join(', ') + ']';
+        }
+        if (typeof xzy_v === 'string') { return '"' + xzy_v + '"'; }
+        if (typeof xzy_v === 'object') {
+            var xzy_parts = [];
+            for (var xzy_k in xzy_v) {
+                if (Object.prototype.hasOwnProperty.call(xzy_v, xzy_k)) {
+                    xzy_parts.push(xzy_k + ': ' + xzy_fmt(xzy_v[xzy_k]));
+                }
+            }
+            return '{ ' + xzy_parts.join(', ') + ' }';
+        }
+        return String(xzy_v);
+    }
+
+    /* ---------- 渲染：对象储物柜 ---------- */
+    function xzy_paint_obj() {
+        xzy_el.props.innerHTML = '';
+        Object.keys(xzy_obj).forEach(function (xzy_k) {
+            var xzy_v = xzy_obj[xzy_k];
+            var xzy_box = document.createElement('div');
+            xzy_box.className = 'xzy_prop';
+            if (xzy_hotKey === xzy_k) {
+                xzy_box.className += ' xzy_prop_hot';
+            }
+            var xzy_key = document.createElement('div');
+            xzy_key.className = 'xzy_prop_key';
+            xzy_key.textContent = xzy_k;
+            var xzy_val = document.createElement('div');
+            xzy_val.className = 'xzy_prop_val' + (typeof xzy_v === 'object' ? ' xzy_nested' : '');
+            xzy_val.textContent = typeof xzy_v === 'object' ? xzy_fmt(xzy_v) : xzy_fmt(xzy_v);
+            xzy_box.appendChild(xzy_key);
+            xzy_box.appendChild(xzy_val);
+            xzy_el.props.appendChild(xzy_box);
+        });
+        if (!Object.keys(xzy_obj).length) {
+            var xzy_empty = document.createElement('span');
+            xzy_empty.className = 'xzy_step';
+            xzy_empty.textContent = '{}  空对象，一个抽屉都没有';
+            xzy_el.props.appendChild(xzy_empty);
+        }
+    }
+
+    /* ---------- 渲染：字符串胶片 ---------- */
+    function xzy_paint_str() {
+        xzy_el.film.innerHTML = '';
+        var xzy_quote1 = document.createElement('span');
+        xzy_quote1.className = 'xzy_quote';
+        xzy_quote1.textContent = '"';
+        xzy_el.film.appendChild(xzy_quote1);
+        for (var xzy_i = 0; xzy_i < xzy_str.length; xzy_i++) {
+            var xzy_ch = xzy_str[xzy_i];
+            var xzy_cell = document.createElement('div');
+            xzy_cell.className = 'xzy_cell';
+            if (xzy_ch === ' ') {
+                xzy_cell.className += ' xzy_cell_space';
+                xzy_ch = '␣';
+            }
+            if (xzy_hitFrom !== null && xzy_i >= xzy_hitFrom && xzy_i < xzy_hitTo) {
+                xzy_cell.className += ' xzy_cell_hit';
+            }
+            if (xzy_dimFrom !== null && xzy_i >= xzy_dimFrom && xzy_i < xzy_dimTo) {
+                xzy_cell.className += ' xzy_cell_drop';
+            }
+            var xzy_txt = document.createElement('span');
+            xzy_txt.textContent = xzy_ch;
+            var xzy_idx = document.createElement('span');
+            xzy_idx.className = 'xzy_cell_idx';
+            xzy_idx.textContent = xzy_i;
+            xzy_cell.appendChild(xzy_txt);
+            xzy_cell.appendChild(xzy_idx);
+            xzy_el.film.appendChild(xzy_cell);
+        }
+        var xzy_quote2 = document.createElement('span');
+        xzy_quote2.className = 'xzy_quote';
+        xzy_quote2.textContent = '"';
+        xzy_el.film.appendChild(xzy_quote2);
+    }
+
+    function xzy_clear_marks() {
+        xzy_hotKey = null;
+        xzy_hitFrom = xzy_hitTo = xzy_dimFrom = xzy_dimTo = null;
+    }
+
+    /* ---------- 结果区 ---------- */
+    function xzy_show(xzy_out) {
+        xzy_el.name.textContent = xzy_out.title;
+        xzy_el.badge.textContent = xzy_out.badge;
+        xzy_el.badge.className = 'xzy_badge' + (xzy_out.badge === '字符串 · 原值不变' ? '' : '');
+        xzy_el.code.textContent = xzy_out.code;
+        xzy_el.ret.textContent = xzy_out.ret;
+        xzy_el.note.innerHTML = xzy_out.note;
+        xzy_el.steps.innerHTML = '';
+        (xzy_out.steps || []).forEach(function (xzy_s) {
+            var xzy_step = document.createElement('span');
+            xzy_step.className = 'xzy_step' + (xzy_s.c ? ' ' + xzy_s.c : '');
+            xzy_step.textContent = xzy_s.t;
+            xzy_el.steps.appendChild(xzy_step);
+        });
+    }
+
+    /* ---------- 对象方法定义 ---------- */
+    var xzy_objMethods = [
+        {
+            name: 'obj.name', hint: '点访问属性',
+            run: function () {
+                xzy_hotKey = 'name';
+                return {
+                    title: '点访问', badge: '对象 · 读取属性',
+                    code: 'xzy_student.name',
+                    ret: xzy_fmt(xzy_obj.name),
+                    note: '点后面写<em>属性名</em>，直接拿到对应的值。就像拉开贴着 name 标签的抽屉。',
+                    steps: []
+                };
+            }
+        },
+        {
+            name: "obj['age']", hint: '方括号访问',
+            run: function () {
+                xzy_hotKey = 'age';
+                return {
+                    title: '方括号访问', badge: '对象 · 读取属性',
+                    code: "xzy_student['age']",
+                    ret: xzy_fmt(xzy_obj.age),
+                    note: '方括号里是一个<em>字符串键</em>。属性名含空格、是数字或存在变量里时，只能用它。',
+                    steps: []
+                };
+            }
+        },
+        {
+            name: 'obj.age = 21', hint: '修改属性',
+            run: function () {
+                var xzy_old = xzy_obj.age;
+                xzy_obj.age = 21;
+                xzy_hotKey = 'age';
+                return {
+                    title: '修改属性', badge: '对象 · 会改变原对象',
+                    code: 'xzy_student.age = 21;',
+                    ret: xzy_old + ' → 21',
+                    note: '对已有属性<em>重新赋值</em>就会覆盖旧值，对象被直接修改。',
+                    steps: [{ t: 'age: ' + xzy_old + ' → 21', c: 'xzy_keep' }]
+                };
+            }
+        },
+        {
+            name: 'obj.city = …', hint: '新增属性',
+            run: function () {
+                xzy_obj.city = '郑州';
+                xzy_hotKey = 'city';
+                return {
+                    title: '新增属性', badge: '对象 · 会改变原对象',
+                    code: "xzy_student.city = '郑州';",
+                    ret: '新增成功，对象多了一个抽屉',
+                    note: '给一个<em>不存在的属性</em>赋值，就会直接创建它——对象不需要提前声明属性。',
+                    steps: [{ t: '+ city: "郑州"', c: 'xzy_keep' }]
+                };
+            }
+        },
+        {
+            name: 'delete obj.hobby', hint: '删除属性',
+            run: function () {
+                var xzy_gone = xzy_fmt(xzy_obj.hobby);
+                delete xzy_obj.hobby;
+                return {
+                    title: 'delete 删除', badge: '对象 · 会改变原对象',
+                    code: 'delete xzy_student.hobby;',
+                    ret: 'true（hobby: ' + xzy_gone + ' 被拆掉了）',
+                    note: 'delete 会把整个<em>键值对</em>从对象上移除，之后访问会得到 undefined。',
+                    steps: [{ t: '- hobby 整个抽屉被拆掉', c: 'xzy_drop' }]
+                };
+            }
+        },
+        {
+            name: 'obj.score.js', hint: '访问嵌套对象',
+            run: function () {
+                xzy_hotKey = 'score';
+                return {
+                    title: '嵌套访问', badge: '对象 · 读取属性',
+                    code: 'xzy_student.score.js',
+                    ret: xzy_fmt(xzy_obj.score.js),
+                    note: '属性的值本身也可以是对象，用多个点<em>一层层往下钻</em>：先拿 score 抽屉，再从里面拿 js。',
+                    steps: [{ t: 'score → { html: 92, js: 88 } → js → 88', c: 'xzy_keep' }]
+                };
+            }
+        },
+        {
+            name: 'for...in', hint: '遍历所有键',
+            run: function () {
+                var xzy_steps = [];
+                for (var xzy_k in xzy_obj) {
+                    xzy_steps.push({ t: xzy_k + ' : ' + xzy_fmt(xzy_obj[xzy_k]), c: '' });
+                    xzy_hotKey = xzy_k;
+                }
+                return {
+                    title: 'for...in 遍历', badge: '对象 · 逐个读取',
+                    code: 'for (let key in xzy_student) {\n  console.log(key, xzy_student[key]);\n}',
+                    ret: xzy_steps.length + ' 个属性',
+                    note: 'for...in 会依次把<em>每个键名</em>交给变量 key，再用方括号取出对应的值。',
+                    steps: xzy_steps
+                };
+            }
+        },
+        {
+            name: 'Object.keys()', hint: '取出所有键名',
+            run: function () {
+                var xzy_ks = Object.keys(xzy_obj);
+                xzy_hotKey = xzy_ks[xzy_ks.length - 1];
+                return {
+                    title: 'Object.keys()', badge: '对象 · 返回新数组',
+                    code: 'Object.keys(xzy_student)',
+                    ret: xzy_fmt(xzy_ks),
+                    note: '把所有键名收集成一个<em>新数组</em>，常配合 .length 判断对象是否为空。',
+                    steps: []
+                };
+            }
+        },
+        {
+            name: "'name' in obj", hint: '判断键是否存在',
+            run: function () {
+                return {
+                    title: 'in 运算符', badge: '对象 · 布尔判断',
+                    code: "'name' in xzy_student",
+                    ret: String('name' in xzy_obj),
+                    note: 'in 只看<em>键存不存在</em>，不管值是什么。判断值要用 obj.name === undefined 之类的方式。',
+                    steps: [
+                        { t: "'name' in obj → true", c: 'xzy_keep' },
+                        { t: "'phone' in obj → " + String('phone' in xzy_obj), c: 'xzy_drop' }
+                    ]
+                };
+            }
+        }
+    ];
+
+    /* ---------- 字符串方法定义 ---------- */
+    var xzy_strMethods = [
+        {
+            name: 'str.length', hint: '字符个数（属性）',
+            run: function () {
+                return {
+                    title: 'length', badge: '字符串 · 属性',
+                    code: 'xzy_str.length',
+                    ret: String(xzy_str.length),
+                    note: 'length 是<em>属性不是方法</em>，不要写成 length()。空格也算一个字符。',
+                    steps: []
+                };
+            }
+        },
+        {
+            name: 'str[0]', hint: '按下标取字符',
+            run: function () {
+                xzy_hitFrom = 0; xzy_hitTo = 1;
+                return {
+                    title: '下标访问', badge: '字符串 · 只读',
+                    code: 'xzy_str[0]',
+                    ret: xzy_fmt(xzy_str[0]),
+                    note: '字符串和数组一样按下标取字符，但<em>只能读不能改</em>：str[0] = "X" 不会生效。',
+                    steps: [{ t: '下标 0 → "H"', c: 'xzy_keep' }]
+                };
+            }
+        },
+        {
+            name: 'charAt(6)', hint: '按下标取字符',
+            run: function () {
+                xzy_hitFrom = 6; xzy_hitTo = 7;
+                return {
+                    title: 'charAt()', badge: '字符串 · 返回新值',
+                    code: 'xzy_str.charAt(6)',
+                    ret: xzy_fmt(xzy_str.charAt(6)),
+                    note: '和 str[6] 效果相同。区别：下标越界时 charAt 返回<em>空字符串</em>，str[99] 返回 undefined。',
+                    steps: []
+                };
+            }
+        },
+        {
+            name: 'slice(6, 10)', hint: '截取子串',
+            run: function () {
+                var xzy_part = xzy_str.slice(6, 10);
+                xzy_hitFrom = 6; xzy_hitTo = 10;
+                xzy_dimFrom = 0; xzy_dimTo = 6;
+                return {
+                    title: 'slice() 截取', badge: '字符串 · 原值不变',
+                    code: 'xzy_str.slice(6, 10)',
+                    ret: xzy_fmt(xzy_part),
+                    note: '从下标 6 截到 10（<em>含头不含尾</em>），原字符串毫发无损。支持负数：slice(-6) 从后往前数。',
+                    steps: [{ t: '保留下标 6~9 → "' + xzy_part + '"', c: 'xzy_keep' },
+                            { t: '前面部分只是被复制，原串不变', c: '' }]
+                };
+            }
+        },
+        {
+            name: "indexOf('Script')", hint: '查找位置',
+            run: function () {
+                var xzy_pos = xzy_str.indexOf('Script');
+                xzy_hitFrom = xzy_pos; xzy_hitTo = xzy_pos + 'Script'.length;
+                return {
+                    title: 'indexOf() 查找', badge: '字符串 · 返回下标',
+                    code: "xzy_str.indexOf('Script')",
+                    ret: String(xzy_pos),
+                    note: '返回<em>第一次出现的位置下标</em>，找不到返回 -1。它返回的是起点，不是匹配内容。',
+                    steps: [{ t: '"Script" 从下标 ' + xzy_pos + ' 开始', c: 'xzy_keep' }]
+                };
+            }
+        },
+        {
+            name: "includes('Java')", hint: '是否包含',
+            run: function () {
+                var xzy_pos = xzy_str.indexOf('Java');
+                xzy_hitFrom = xzy_pos; xzy_hitTo = xzy_pos + 4;
+                return {
+                    title: 'includes() 包含', badge: '字符串 · 布尔判断',
+                    code: "xzy_str.includes('Java')",
+                    ret: String(xzy_str.includes('Java')),
+                    note: '只回答<em>有没有</em>，不关心在哪。比 indexOf 更直观，适合做条件判断。',
+                    steps: [{ t: '包含 "Java" → true', c: 'xzy_keep' }]
+                };
+            }
+        },
+        {
+            name: 'toUpperCase()', hint: '全部变大写',
+            run: function () {
+                var xzy_up = xzy_str.toUpperCase();
+                xzy_hitFrom = 0; xzy_hitTo = xzy_str.length;
+                return {
+                    title: 'toUpperCase()', badge: '字符串 · 原值不变',
+                    code: 'xzy_str.toUpperCase()',
+                    ret: xzy_fmt(xzy_up),
+                    note: '返回一个<em>全新的全大写字符串</em>，原字符串永远不变——字符串的所有方法都是这样。',
+                    steps: [{ t: xzy_fmt(xzy_str) + ' → ' + xzy_fmt(xzy_up), c: 'xzy_keep' }]
+                };
+            }
+        },
+        {
+            name: "replace('…', '…')", hint: '替换第一个匹配',
+            run: function () {
+                var xzy_new = xzy_str.replace('JavaScript', '世界');
+                xzy_hitFrom = 6; xzy_hitTo = xzy_str.length;
+                return {
+                    title: 'replace() 替换', badge: '字符串 · 原值不变',
+                    code: "xzy_str.replace('JavaScript', '世界')",
+                    ret: xzy_fmt(xzy_new),
+                    note: '只替换<em>第一个</em>匹配（要全换需配合正则 /g），返回替换后的新字符串。',
+                    steps: [{ t: '"Hello JavaScript" → ' + xzy_fmt(xzy_new), c: 'xzy_keep' }]
+                };
+            }
+        },
+        {
+            name: "split(' ')", hint: '按分隔符拆成数组',
+            run: function () {
+                var xzy_parts = xzy_str.split(' ');
+                xzy_hitFrom = 5; xzy_hitTo = 6;
+                return {
+                    title: 'split() 拆分', badge: '字符串 · 返回新数组',
+                    code: "xzy_str.split(' ')",
+                    ret: xzy_fmt(xzy_parts),
+                    note: '以空格为刀切开字符串，返回<em>数组</em>。分隔符本身不会出现在结果里。',
+                    steps: [
+                        { t: '"Hello"', c: 'xzy_keep' },
+                        { t: '空格被切掉', c: 'xzy_drop' },
+                        { t: '"JavaScript"', c: 'xzy_keep' }
+                    ]
+                };
+            }
+        },
+        {
+            name: 'trim()', hint: '去掉两端空格',
+            run: function () {
+                var xzy_dirty = '   Hi   ';
+                var xzy_clean = xzy_dirty.trim();
+                return {
+                    title: 'trim() 去空格', badge: '字符串 · 原值不变',
+                    code: "'   Hi   '.trim()",
+                    ret: xzy_fmt(xzy_clean),
+                    note: '只裁掉<em>两端的空格</em>，中间的不动。处理用户输入（表单、搜索框）之前先 trim 是好习惯。',
+                    steps: [
+                        { t: '"   Hi   "', c: 'xzy_drop' },
+                        { t: '→ ' + xzy_fmt(xzy_clean), c: 'xzy_keep' }
+                    ]
+                };
+            }
+        },
+        {
+            name: '模板字符串', hint: '`你好, ${name}`',
+            run: function () {
+                var xzy_msg = '你好, ' + xzy_obj.name + '！今年 ' + xzy_obj.age + ' 岁';
+                return {
+                    title: '模板字符串', badge: '字符串 · ES6 语法',
+                    code: '`你好, ${xzy_obj.name}！今年 ${xzy_obj.age} 岁`',
+                    ret: xzy_fmt(xzy_msg),
+                    note: '反引号包裹，${} 里可以放<em>任何表达式</em>，变量、运算、对象属性都行，比加号拼接清爽得多。',
+                    steps: [{ t: '${xzy_obj.name} → "夏志远"', c: 'xzy_keep' },
+                            { t: '${xzy_obj.age} → 20', c: 'xzy_keep' }]
+                };
+            }
+        }
+    ];
+
+    /* ---------- 生成方法按钮 ---------- */
+    function xzy_render_methods(xzy_box, xzy_list, xzy_isStr) {
+        xzy_box.innerHTML = '';
+        xzy_list.forEach(function (xzy_m) {
+            var xzy_btn = document.createElement('button');
+            xzy_btn.type = 'button';
+            xzy_btn.className = 'xzy_mbtn';
+            var xzy_t = document.createElement('b');
+            xzy_t.textContent = xzy_m.name;
+            var xzy_s = document.createElement('small');
+            xzy_s.textContent = xzy_m.hint;
+            xzy_btn.appendChild(xzy_t);
+            xzy_btn.appendChild(xzy_s);
+            xzy_btn.addEventListener('click', function () {
+                xzy_clear_marks();
+                var xzy_out = xzy_m.run();
+                xzy_show(xzy_out);
+                xzy_paint_obj();
+                xzy_paint_str();
+            });
+            xzy_box.appendChild(xzy_btn);
+        });
+    }
+
+    /* ---------- 重置 ---------- */
+    xzy_el.objReset.addEventListener('click', function () {
+        xzy_obj = xzy_seed();
+        xzy_clear_marks();
+        xzy_paint_obj();
+        xzy_show({
+            title: '—', badge: '待演示',
+            code: '// 对象已重置',
+            ret: '—',
+            note: '对象已恢复初始状态，点击紫色按钮继续演示。',
+            steps: []
+        });
+    });
+
+    xzy_el.strReset.addEventListener('click', function () {
+        xzy_str = xzy_strSeed;
+        xzy_clear_marks();
+        xzy_paint_str();
+        xzy_show({
+            title: '—', badge: '待演示',
+            code: '// 字符串已重置为 "Hello JavaScript"',
+            ret: '—',
+            note: '字符串已恢复初始状态，点击青色按钮继续演示。',
+            steps: []
+        });
+    });
+
+    /* ---------- 初始化 ---------- */
+    xzy_render_methods(xzy_el.objMethods, xzy_objMethods, false);
+    xzy_render_methods(xzy_el.strMethods, xzy_strMethods, true);
+    xzy_paint_obj();
+    xzy_paint_str();
+})();
+</script>
+</body>
+</html>
