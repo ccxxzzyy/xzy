@@ -1,0 +1,1002 @@
+<!--
+姓名：夏志远
+日期：2026-10-29
+功能：仿 1688 首页布局（顶部工具条、logo 搜索区、品类市场侧栏、四个促销榜、为你推荐）
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>16-3 仿 1688 首页</title>
+    <link rel="stylesheet" href="font/font_5244859_igt0lytephh/iconfont.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f4f4f4;
+            color: #333;
+            font-family: "Microsoft YaHei", "PingFang SC", "Segoe UI", sans-serif;
+            font-size: 12px;
+            padding-bottom: 40px;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        ul,
+        li {
+            list-style: none;
+        }
+
+        input,
+        button {
+            font-family: inherit;
+        }
+
+        /* ============ 顶部工具条 ============ */
+        .xzy_topbar {
+            height: 32px;
+            background: #f7f7f7;
+            border-bottom: 1px solid #eee;
+            color: #666;
+            font-size: 12px;
+        }
+
+        .xzy_topbar_inner {
+            width: 1200px;
+            margin: 0 auto;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .xzy_top_left,
+        .xzy_top_right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .xzy_top_left a:hover,
+        .xzy_top_right a:hover {
+            color: #ff4400;
+        }
+
+        .xzy_top_home {
+            color: #ff4400;
+            font-weight: 700;
+        }
+
+        .xzy_sep {
+            width: 1px;
+            height: 12px;
+            background: #ddd;
+        }
+
+        .xzy_signup {
+            color: #ff4400;
+        }
+
+        /* ============ 头部 logo 与搜索 ============ */
+        .xzy_header {
+            background: #fff;
+            padding: 10px 0 16px;
+        }
+
+        .xzy_header_inner {
+            width: 1200px;
+            margin: 0 auto;
+        }
+
+        .xzy_head_row {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+
+        .xzy_logo {
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+            padding-top: 4px;
+        }
+
+        .xzy_logo_num {
+            font-family: "Arial Black", Impact, sans-serif;
+            font-style: italic;
+            font-size: 54px;
+            line-height: 0.92;
+            color: #ff4400;
+            letter-spacing: -3px;
+        }
+
+        .xzy_logo_text {
+            padding-bottom: 4px;
+            line-height: 1.35;
+        }
+
+        .xzy_logo_text b {
+            display: block;
+            font-size: 15px;
+            color: #ff4400;
+            letter-spacing: 1px;
+        }
+
+        .xzy_logo_text span {
+            display: block;
+            font-size: 11px;
+            color: #ff8c42;
+        }
+
+        .xzy_services {
+            display: flex;
+            gap: 28px;
+            padding-top: 6px;
+        }
+
+        .xzy_service {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            color: #666;
+            font-size: 12px;
+            line-height: 1.4;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .xzy_service:hover {
+            color: #ff4400;
+        }
+
+        .xzy_service i {
+            font-size: 22px;
+            line-height: 1;
+        }
+
+        .xzy_service svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .xzy_dot {
+            position: absolute;
+            top: -2px;
+            right: 12px;
+            width: 6px;
+            height: 6px;
+            background: #ff3a1f;
+            border-radius: 50%;
+        }
+
+        .xzy_search {
+            display: flex;
+            align-items: center;
+            width: 760px;
+            margin: 10px 0 0 104px;
+        }
+
+        .xzy_search_box {
+            flex: 1;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #fff;
+            border: 2px solid #ff4400;
+            border-right: none;
+            border-radius: 24px 0 0 24px;
+            padding: 0 16px;
+        }
+
+        .xzy_search_box svg {
+            width: 20px;
+            height: 20px;
+            color: #999;
+            flex: none;
+            cursor: pointer;
+        }
+
+        .xzy_search_box input {
+            flex: 1;
+            height: 100%;
+            border: none;
+            outline: none;
+            font-size: 13px;
+            color: #333;
+            background: transparent;
+        }
+
+        .xzy_search_box input::placeholder {
+            color: #b5b5b5;
+        }
+
+        .xzy_search_btn {
+            width: 118px;
+            height: 48px;
+            border: none;
+            border-radius: 24px;
+            background: linear-gradient(90deg, #ff6a00, #ff2f00);
+            color: #fff;
+            font-size: 17px;
+            letter-spacing: 4px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(255, 68, 0, 0.25);
+            transition: 0.2s;
+        }
+
+        .xzy_search_btn:hover {
+            filter: brightness(1.06);
+        }
+
+        /* ============ 主体 ============ */
+        .xzy_main {
+            width: 1200px;
+            margin: 14px auto 0;
+            display: grid;
+            grid-template-columns: 196px 1fr;
+            gap: 14px;
+            align-items: stretch;
+        }
+
+        .xzy_side {
+            background: #fbfbfb;
+            border: 1px solid #f0f0f0;
+            border-radius: 6px;
+            padding: 12px 0 10px;
+        }
+
+        .xzy_side_title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #333;
+            padding: 2px 16px 10px;
+        }
+
+        .xzy_side li a {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 7px 16px;
+            font-size: 13px;
+            color: #555;
+            border-radius: 4px;
+            transition: 0.15s;
+        }
+
+        .xzy_side li a svg {
+            width: 15px;
+            height: 15px;
+            color: #999;
+            flex: none;
+        }
+
+        .xzy_side li a:hover {
+            background: #fff;
+            color: #ff4400;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .xzy_side li a:hover svg {
+            color: #ff4400;
+        }
+
+        .xzy_side_more {
+            display: block;
+            padding: 9px 16px 0;
+            color: #ff4400;
+            font-size: 12px;
+        }
+
+        .xzy_panels {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .xzy_panel {
+            background: #fff;
+            border: 1px solid #ffe1da;
+            border-radius: 6px;
+            padding: 12px 12px 14px;
+        }
+
+        .xzy_panel_title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 10px;
+        }
+
+        .xzy_panel_title::before {
+            content: "";
+            width: 4px;
+            height: 15px;
+            border-radius: 2px;
+            background: #ff4400;
+        }
+
+        .xzy_panel_title em {
+            font-style: normal;
+            font-size: 11px;
+            font-weight: 400;
+            color: #ff8a65;
+        }
+
+        .xzy_tiles {
+            display: flex;
+            gap: 8px;
+            height: 132px;
+        }
+
+        .xzy_tile {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            border-radius: 4px;
+            background: #f6f6f6;
+            cursor: pointer;
+        }
+
+        .xzy_tile img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.35s;
+        }
+
+        .xzy_tile:hover img {
+            transform: scale(1.06);
+        }
+
+        .xzy_tile_tag {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            padding: 2px 7px;
+            border-radius: 3px;
+            background: #ff3a1f;
+            color: #fff;
+            font-size: 11px;
+            line-height: 1.5;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+        }
+
+        .xzy_tile_tag.xzy_tile_tag_dark {
+            background: rgba(0, 0, 0, 0.55);
+        }
+
+        .xzy_tile_foot {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 16px 7px 6px;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.72));
+            color: #fff;
+            font-size: 11px;
+            line-height: 1.45;
+        }
+
+        .xzy_tile_foot b {
+            display: block;
+            font-size: 12px;
+        }
+
+        .xzy_tile_plain {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+            background: linear-gradient(160deg, #fff 0%, #f3f3f3 100%);
+            color: #444;
+            text-align: center;
+            padding: 8px;
+            font-size: 12px;
+        }
+
+        .xzy_tile_plain b {
+            font-size: 14px;
+            color: #ff4400;
+        }
+
+        /* ============ 为你推荐 ============ */
+        .xzy_recommend {
+            width: 1200px;
+            margin: 16px auto 0;
+            background: #fff;
+            border: 1px solid #ffe1da;
+            border-radius: 6px;
+            padding: 16px 16px 20px;
+            position: relative;
+        }
+
+        .xzy_rec_head {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding-left: 10px;
+            border-left: 4px solid #ff4400;
+        }
+
+        .xzy_rec_head h2 {
+            font-size: 20px;
+            color: #ff4400;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .xzy_rec_head span {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .xzy_rec_more {
+            margin-left: auto;
+            font-size: 12px;
+            color: #999;
+        }
+
+        .xzy_rec_more:hover {
+            color: #ff4400;
+        }
+
+        .xzy_rec_grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+        }
+
+        .xzy_card {
+            border: 1px solid #f1f1f1;
+            border-radius: 6px;
+            overflow: hidden;
+            background: #fff;
+            transition: 0.2s;
+        }
+
+        .xzy_card:hover {
+            border-color: #ffc2b3;
+            box-shadow: 0 8px 20px rgba(255, 68, 0, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .xzy_card_img {
+            position: relative;
+            height: 176px;
+            overflow: hidden;
+            background: #f7f7f7;
+        }
+
+        .xzy_card_img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.35s;
+        }
+
+        .xzy_card:hover .xzy_card_img img {
+            transform: scale(1.05);
+        }
+
+        .xzy_card_tag {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: #ff3a1f;
+            color: #fff;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 3px;
+        }
+
+        .xzy_card_tag.xzy_card_tag_soft {
+            background: rgba(255, 58, 31, 0.85);
+        }
+
+        .xzy_card_strip {
+            position: absolute;
+            left: 8px;
+            right: 8px;
+            bottom: 8px;
+            padding: 6px 8px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.92);
+            color: #ff4400;
+            font-size: 13px;
+            font-weight: 700;
+            text-align: center;
+            line-height: 1.35;
+        }
+
+        .xzy_card_body {
+            padding: 10px 10px 14px;
+        }
+
+        .xzy_card_title {
+            font-size: 13px;
+            color: #333;
+            line-height: 1.55;
+            height: 40px;
+            overflow: hidden;
+        }
+
+        .xzy_card_meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-top: 8px;
+        }
+
+        .xzy_card_meta span {
+            font-size: 11px;
+            color: #ff7043;
+            border: 1px solid #ffd0c4;
+            border-radius: 2px;
+            padding: 0 4px;
+            line-height: 1.6;
+        }
+
+        .xzy_card_price {
+            margin-top: 9px;
+            color: #ff4400;
+            font-weight: 700;
+            font-size: 17px;
+            font-family: Arial, sans-serif;
+        }
+
+        .xzy_card_price small {
+            font-size: 12px;
+            font-weight: 400;
+        }
+
+        /* ============ 右侧悬浮 ============ */
+        .xzy_helper {
+            position: fixed;
+            right: 0;
+            top: 58%;
+            background: #fff;
+            border: 1px solid #eee;
+            border-right: none;
+            border-radius: 8px 0 0 8px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+            padding: 10px 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            color: #3f7cff;
+            font-size: 12px;
+            cursor: pointer;
+            z-index: 20;
+        }
+
+        .xzy_helper:hover {
+            color: #ff4400;
+        }
+
+        .xzy_helper svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .xzy_helper span {
+            writing-mode: vertical-rl;
+            letter-spacing: 2px;
+            color: #555;
+        }
+
+        /* ============ 搜索提示 ============ */
+        .xzy_toast {
+            position: fixed;
+            left: 50%;
+            top: 24px;
+            transform: translate(-50%, -20px);
+            background: rgba(0, 0, 0, 0.78);
+            color: #fff;
+            font-size: 13px;
+            padding: 9px 18px;
+            border-radius: 6px;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.25s;
+            z-index: 99;
+        }
+
+        .xzy_toast.xzy_toast_on {
+            opacity: 1;
+            transform: translate(-50%, 0);
+        }
+
+        @media (max-width: 1240px) {
+            .xzy_topbar_inner,
+            .xzy_header_inner,
+            .xzy_main,
+            .xzy_recommend {
+                width: 100%;
+                padding-left: 18px;
+                padding-right: 18px;
+            }
+
+            .xzy_search {
+                width: 100%;
+                max-width: 760px;
+                margin-left: 0;
+            }
+
+            .xzy_rec_grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 860px) {
+            .xzy_services,
+            .xzy_top_right {
+                display: none;
+            }
+
+            .xzy_main {
+                grid-template-columns: 1fr;
+            }
+
+            .xzy_panels {
+                grid-template-columns: 1fr;
+            }
+
+            .xzy_rec_grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部工具条 -->
+    <div class="xzy_topbar">
+        <div class="xzy_topbar_inner">
+            <div class="xzy_top_left">
+                <a class="xzy_top_home" href="index.html">← 返回首页</a>
+                <span class="xzy_sep"></span>
+                <a href="index.html">1688导航</a>
+                <a href="index.html">我的阿里</a>
+                <a href="index.html">采购车</a>
+                <a href="index.html">消息</a>
+            </div>
+            <div class="xzy_top_right">
+                <a href="index.html">1688首页</a>
+                <a href="index.html">我的收藏</a>
+                <a href="index.html">商家中心</a>
+                <a href="index.html">客服中心</a>
+                <a href="index.html">网站导航</a>
+                <a href="index.html">手机逛1688</a>
+                <span class="xzy_sep"></span>
+                <a class="xzy_signup" href="index.html">免费注册</a>
+                <a href="index.html">请登录</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 头部 -->
+    <header class="xzy_header">
+        <div class="xzy_header_inner">
+            <div class="xzy_head_row">
+                <div class="xzy_logo">
+                    <div class="xzy_logo_num">1688</div>
+                    <div class="xzy_logo_text">
+                        <b>·源头厂货!</b>
+                        <span>一价到底 · 批发电商</span>
+                    </div>
+                </div>
+
+                <div class="xzy_services">
+                    <div class="xzy_service">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                            <path d="M3 5h2l2.2 10.2h9.9L19 8H6"></path>
+                            <circle cx="9.5" cy="19" r="1.4"></circle>
+                            <circle cx="16.5" cy="19" r="1.4"></circle>
+                        </svg>
+                        <span>采购车</span>
+                    </div>
+                    <div class="xzy_service">
+                        <span class="xzy_dot"></span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                            <path d="M4 5h16v11H9l-4 3.5V5z"></path>
+                            <path d="M8 9h8M8 12h5"></path>
+                        </svg>
+                        <span>消息</span>
+                    </div>
+                    <div class="xzy_service">
+                        <i class="iconfont icon-xiazai"></i>
+                        <span>下载插件</span>
+                    </div>
+                    <div class="xzy_service">
+                        <i class="iconfont icon-wode"></i>
+                        <span>请登录</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="xzy_search">
+                <div class="xzy_search_box">
+                    <input type="text" id="xzy_key" placeholder="请输入关键字、图片、链接">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                        <path d="M3 8h3l1.6-2h8.8L18 8h3v11H3z"></path>
+                        <circle cx="12" cy="13" r="3.4"></circle>
+                    </svg>
+                </div>
+                <button class="xzy_search_btn" id="xzy_search" type="button">搜索</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主体：品类市场 + 促销榜 -->
+    <main class="xzy_main">
+        <aside class="xzy_side">
+            <div class="xzy_side_title">品类市场</div>
+            <ul>
+                <li><a href="index.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M8.5 3 4 6.2l2 4.1 2.2-1.1V21h7.6V9.2l2.2 1.1 2-4.1L15.5 3l-1.8 2h-3.4z"></path></svg>
+                    服饰内衣 运动户外</a></li>
+                <li><a href="index.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M9 8V5.5A2.5 2.5 0 0 1 14 4v1"></path><path d="M8.5 8h7l-.8 12h-5.4z"></path><path d="M8.5 12h7"></path></svg>
+                    日用百货 食品饮料</a></li>
+                <li><a href="index.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="8.5" y="7" width="7" height="13" rx="1.5"></rect><path d="M10.5 7V4h3v3"></path><path d="M9.5 11h5M9.5 15h5"></path></svg>
+                    母婴 玩具</a></li>
+                <li><a href="index.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5.5 8h13l-1 12h-11z"></path><path d="M9 8V6.5a3 3 0 0 1 6 0V8"></path></svg>
+                    鞋包 配饰</a></li>
+                <li><a href="index.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M9.5 21h5V11h-5z"></path><path d="M10.5 11V4h3v7"></path><path d="M10.5 6.5h3"></path></svg>
+                    美妆 日化</a></li>
+                <li><a href="index.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="7" y="2.5" width="10" height="19" rx="2"></rect><path d="M10.5 18.5h3"></path></svg>
+                    数码家电 汽车用品</a></li>
+                <li><a href="index.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M14.5 3a4.8 4.8 0 0 1 0 7.2l-7.8 7.8-2.7-2.7 7.8-7.8A4.8 4.8 0 0 1 14.5 3z"></path><path d="M5.5 19.5 4 21"></path></svg>
+                    机械 五金 仪表</a></li>
+                <li><a href="index.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 8 12 4l8 4v8l-8 4-8-4z"></path><path d="M4 8l8 4 8-4M12 12v8"></path></svg>
+                    包装 办公文教</a></li>
+                <li><a href="index.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M9 3v5M15 3v5"></path><path d="M6 8h12v3a6 6 0 0 1-12 0z"></path><path d="M12 17v4"></path></svg>
+                    电工 安防</a></li>
+                <li><a href="index.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M9 18h6"></path><path d="M10 21h4"></path><path d="M12 3a6 6 0 0 1 3 11.2V18H9v-3.8A6 6 0 0 1 12 3z"></path></svg>
+                    照明 电子</a></li>
+                <li><a href="index.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3.5 10.5 12 3l8.5 7.5"></path><path d="M6 10v10h12V10"></path><path d="M10 20v-6h4v6"></path></svg>
+                    家装建材 家纺家饰</a></li>
+                <li><a href="index.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M10 3h4v6l4 9a2 2 0 0 1-1.8 3H8.8A2 2 0 0 1 7 18l4-9z"></path><path d="M7.5 15h9"></path></svg>
+                    橡塑 化工</a></li>
+            </ul>
+            <a class="xzy_side_more" href="index.html">查看更多分类 ›</a>
+        </aside>
+
+        <section class="xzy_panels">
+            <div class="xzy_panel">
+                <div class="xzy_panel_title">低价热卖榜 <em>源头好货 · 一件代发</em></div>
+                <div class="xzy_tiles">
+                    <div class="xzy_tile">
+                        <div class="xzy_tile_plain">
+                            <b>源头厂货</b>
+                            <span>支持一件代发</span>
+                            <span>闪电拿样</span>
+                        </div>
+                        <span class="xzy_tile_tag xzy_tile_tag_dark">闪电拿样</span>
+                    </div>
+                    <div class="xzy_tile">
+                        <img src="img/6.jpg" alt="促销商品">
+                        <span class="xzy_tile_tag">官方授权</span>
+                        <div class="xzy_tile_foot"><b>正品保证</b>假一赔十 · 售后无忧</div>
+                    </div>
+                    <div class="xzy_tile">
+                        <img src="img/7.jpg" alt="促销商品">
+                        <span class="xzy_tile_tag">狂抢爆款</span>
+                        <div class="xzy_tile_foot"><b>仅限本场</b>限量 2000 件 · 先到先得</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="xzy_panel">
+                <div class="xzy_panel_title">包邮特卖榜 <em>全国包邮 · 当日发货</em></div>
+                <div class="xzy_tiles">
+                    <div class="xzy_tile">
+                        <img src="img/1.jpg" alt="促销商品">
+                        <span class="xzy_tile_tag">包邮</span>
+                        <div class="xzy_tile_foot"><b>金属标牌定制</b>全国包邮 · 打样免费</div>
+                    </div>
+                    <div class="xzy_tile">
+                        <img src="img/2.jpg" alt="促销商品">
+                        <span class="xzy_tile_tag xzy_tile_tag_dark">赠品</span>
+                        <div class="xzy_tile_foot"><b>买就送洗衣液</b>赠完即止</div>
+                    </div>
+                    <div class="xzy_tile">
+                        <img src="img/3.jpg" alt="促销商品">
+                        <span class="xzy_tile_tag">库存充足</span>
+                        <div class="xzy_tile_foot"><b>现货速发</b>48 小时内出库</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="xzy_panel">
+                <div class="xzy_panel_title">好物严选榜 <em>严选工厂 · 品质保障</em></div>
+                <div class="xzy_tiles">
+                    <div class="xzy_tile">
+                        <img src="img/4.jpg" alt="促销商品">
+                        <span class="xzy_tile_tag">回购爆款</span>
+                        <div class="xzy_tile_foot"><b>加厚洗脸巾</b>母婴可用 · 不掉毛</div>
+                    </div>
+                    <div class="xzy_tile">
+                        <img src="img/5.jpg" alt="促销商品">
+                        <span class="xzy_tile_tag xzy_tile_tag_dark">92% 好评</span>
+                        <div class="xzy_tile_foot"><b>用户真实评价</b>翻单率超 60%</div>
+                    </div>
+                    <div class="xzy_tile">
+                        <img src="img/c80eb3e2a1147600f043172bd1830a27.jpg" alt="促销商品">
+                        <span class="xzy_tile_tag">官方直营</span>
+                        <div class="xzy_tile_foot"><b>品质工厂直销</b>支持验厂验货</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="xzy_panel">
+                <div class="xzy_panel_title">工业品精选集 <em>专业采购 · 一站配齐</em></div>
+                <div class="xzy_tiles">
+                    <div class="xzy_tile">
+                        <img src="img/eeb3423c3f27d06fcab3210b43b9af28.jpg" alt="工业品">
+                        <span class="xzy_tile_tag">工业之美</span>
+                        <div class="xzy_tile_foot"><b>色卡样板</b>不反光 · 可定制</div>
+                    </div>
+                    <div class="xzy_tile">
+                        <img src="img/1.jpg" alt="工业品">
+                        <span class="xzy_tile_tag xzy_tile_tag_dark">现货速发</span>
+                        <div class="xzy_tile_foot"><b>五金工具</b>批发价供应</div>
+                    </div>
+                    <div class="xzy_tile">
+                        <img src="img/2.jpg" alt="工业品">
+                        <span class="xzy_tile_tag">支持定制</span>
+                        <div class="xzy_tile_foot"><b>面料辅料</b>小批量也可订</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 为你推荐 -->
+    <section class="xzy_recommend">
+        <div class="xzy_rec_head">
+            <h2>为你推荐</h2>
+            <span>根据您的浏览，实时为您推荐爆款产品</span>
+            <a class="xzy_rec_more" href="index.html">查看更多 ›</a>
+        </div>
+
+        <div class="xzy_rec_grid">
+            <a class="xzy_card" href="index.html">
+                <div class="xzy_card_img">
+                    <img src="img/3.jpg" alt="太阳能投光灯">
+                    <span class="xzy_card_tag">爆款</span>
+                    <div class="xzy_card_strip">太阳能折叠<br>投光灯监控</div>
+                </div>
+                <div class="xzy_card_body">
+                    <p class="xzy_card_title">户外太阳能折叠投光灯 一拖二监控专用庭院灯</p>
+                    <div class="xzy_card_meta"><span>源头工厂</span><span>支持定制</span></div>
+                    <div class="xzy_card_price">¥168.00 <small>起</small></div>
+                </div>
+            </a>
+
+            <a class="xzy_card" href="index.html">
+                <div class="xzy_card_img">
+                    <img src="img/4.jpg" alt="手提垃圾袋">
+                    <span class="xzy_card_tag">狂抢爆款</span>
+                    <div class="xzy_card_strip">手提垃圾袋<br>免费灵活开票</div>
+                </div>
+                <div class="xzy_card_body">
+                    <p class="xzy_card_title">家用加厚手提式垃圾袋 一次性厨房塑料袋批发</p>
+                    <div class="xzy_card_meta"><span>当日发货</span><span>包邮</span></div>
+                    <div class="xzy_card_price">¥6.90 <small>/ 卷</small></div>
+                </div>
+            </a>
+
+            <a class="xzy_card" href="index.html">
+                <div class="xzy_card_img">
+                    <img src="img/5.jpg" alt="花雕酒">
+                    <span class="xzy_card_tag">热销</span>
+                    <div class="xzy_card_strip">三年陈酿<br>陈年花雕</div>
+                </div>
+                <div class="xzy_card_body">
+                    <p class="xzy_card_title">绍兴产三年陈酿花雕酒 500ml 坛装黄酒批发</p>
+                    <div class="xzy_card_meta"><span>厂家直供</span><span>整箱更优</span></div>
+                    <div class="xzy_card_price">¥38.00 <small>/ 坛</small></div>
+                </div>
+            </a>
+
+            <a class="xzy_card" href="index.html">
+                <div class="xzy_card_img">
+                    <img src="img/6.jpg" alt="休闲上衣">
+                    <span class="xzy_card_tag xzy_card_tag_soft">小贵!但真好穿</span>
+                    <div class="xzy_card_strip">亲肤透气<br>舒适耐穿</div>
+                </div>
+                <div class="xzy_card_body">
+                    <p class="xzy_card_title">秋季新款宽松休闲上衣 男女同款纯色打底衫</p>
+                    <div class="xzy_card_meta"><span>支持一件代发</span></div>
+                    <div class="xzy_card_price">¥59.00 <small>起</small></div>
+                </div>
+            </a>
+
+            <a class="xzy_card" href="index.html">
+                <div class="xzy_card_img">
+                    <img src="img/7.jpg" alt="挤压瓶">
+                    <span class="xzy_card_tag">随挤随用</span>
+                    <div class="xzy_card_strip">手提方便<br>4 升大容量</div>
+                </div>
+                <div class="xzy_card_body">
+                    <p class="xzy_card_title">4 升大容量手提挤压瓶 酱料分装壶商用厨房用品</p>
+                    <div class="xzy_card_meta"><span>食品级材质</span><span>现货</span></div>
+                    <div class="xzy_card_price">¥12.80 <small>起</small></div>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- 右侧悬浮按钮 -->
+    <div class="xzy_helper">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+            <circle cx="12" cy="8" r="3.6"></circle>
+            <path d="M4.5 21a7.5 7.5 0 0 1 15 0"></path>
+            <path d="M17.5 3.5 21 5.5"></path>
+        </svg>
+        <span>采购助手</span>
+    </div>
+
+    <div class="xzy_toast" id="xzy_toast"></div>
+
+    <script>
+        (function () {
+            'use strict';
+
+            var xzy_key = document.getElementById('xzy_key');
+            var xzy_btn = document.getElementById('xzy_search');
+            var xzy_toast = document.getElementById('xzy_toast');
+            var xzy_timer = null;
+
+            function xzy_search() {
+                var xzy_word = xzy_key.value.trim();
+                xzy_toast.textContent = xzy_word
+                    ? '正在搜索「' + xzy_word + '」（演示页面，无真实数据）'
+                    : '请输入关键字、图片或链接';
+                xzy_toast.classList.add('xzy_toast_on');
+                clearTimeout(xzy_timer);
+                xzy_timer = setTimeout(function () {
+                    xzy_toast.classList.remove('xzy_toast_on');
+                }, 1800);
+            }
+
+            xzy_btn.addEventListener('click', xzy_search);
+            xzy_key.addEventListener('keydown', function (xzy_e) {
+                if (xzy_e.key === 'Enter') {
+                    xzy_search();
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

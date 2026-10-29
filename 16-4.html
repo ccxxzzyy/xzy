@@ -1,0 +1,492 @@
+<!--
+姓名：夏志远
+日期：2026-10-29
+功能：使用图片实现的「点击排行」选项卡切换组件（高亮/默认图片切换、按需加载、响应式）
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>16-4 图片选项卡切换</title>
+    <style>
+        :root {
+            --xzy_orange: #ff5a00;
+            --xzy_orange_light: #ff8a3d;
+            --xzy_text: #555;
+            --xzy_muted: #b0b0b0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #f4f4f4;
+            color: var(--xzy_text);
+            font-family: "Microsoft YaHei", "PingFang SC", "Segoe UI", sans-serif;
+            padding: 36px 16px 60px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .xzy_page {
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .xzy_back {
+            display: inline-block;
+            margin-bottom: 14px;
+            padding: 5px 13px;
+            font-size: 12px;
+            color: #888;
+            background: #fff;
+            border: 1px solid #e2e2e2;
+            border-radius: 999px;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .xzy_back:hover {
+            color: var(--xzy_orange);
+            border-color: var(--xzy_orange);
+        }
+
+        .xzy_card {
+            background: #fff;
+            border: 1px solid #e8e8e8;
+            border-radius: 4px;
+            box-shadow: 0 8px 26px rgba(0, 0, 0, 0.05);
+            padding: 20px 24px 22px;
+        }
+
+        .xzy_head_img img {
+            display: block;
+            width: min(300px, 100%);
+            height: auto;
+        }
+
+        /* 图片加载完成后再显示，避免出现空图占位标记 */
+        .xzy_img {
+            visibility: hidden;
+        }
+
+        .xzy_img.xzy_img_ready {
+            visibility: visible;
+        }
+
+        .xzy_tabs {
+            display: flex;
+            margin-top: 14px;
+        }
+
+        .xzy_tab {
+            position: relative;
+            flex: 1 1 50%;
+            height: clamp(40px, 9vw, 44px);
+            padding: 0;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .xzy_tab_bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: fill;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .xzy_tab_bg_off {
+            z-index: 1;
+        }
+
+        .xzy_tab_bg_on {
+            z-index: 2;
+            opacity: 0;
+            transition: opacity 0.32s ease;
+        }
+
+        .xzy_tab.xzy_tab_on .xzy_tab_bg_on {
+            opacity: 1;
+        }
+
+        .xzy_tab_text {
+            position: relative;
+            z-index: 3;
+            font-size: 16px;
+            letter-spacing: 0.5px;
+            color: #666;
+            transition: color 0.25s ease;
+        }
+
+        .xzy_tab.xzy_tab_on .xzy_tab_text {
+            color: var(--xzy_orange);
+            font-weight: 700;
+        }
+
+        .xzy_tab:not(.xzy_tab_on):hover .xzy_tab_text {
+            color: var(--xzy_orange_light);
+        }
+
+        .xzy_tab:focus-visible {
+            outline: 2px solid rgba(255, 90, 0, 0.35);
+            outline-offset: -2px;
+        }
+
+        .xzy_panel {
+            margin-top: 8px;
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.22s ease, transform 0.22s ease;
+        }
+
+        .xzy_panel.xzy_fading {
+            opacity: 0;
+            transform: translateY(6px);
+        }
+
+        .xzy_list {
+            list-style: none;
+        }
+
+        .xzy_item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            height: 31px;
+        }
+
+        .xzy_rank {
+            flex: none;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: "Times New Roman", Georgia, serif;
+            line-height: 1;
+            color: var(--xzy_orange);
+        }
+
+        .xzy_rank_top {
+            font-size: 12px;
+            background: url("img/xzy_tab_square.jpg") no-repeat center / 100% 100%;
+        }
+
+        .xzy_rank_normal {
+            font-size: 15px;
+        }
+
+        .xzy_title {
+            flex: 1;
+            min-width: 0;
+            font-size: 14px;
+            color: #555;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: color 0.2s;
+        }
+
+        .xzy_item:hover .xzy_title {
+            color: var(--xzy_orange);
+        }
+
+        .xzy_count {
+            flex: none;
+            min-width: 50px;
+            text-align: right;
+            font-family: Arial, "Segoe UI", sans-serif;
+            font-size: 12px;
+            color: #999;
+            letter-spacing: 0.3px;
+        }
+
+        .xzy_hint {
+            margin-top: 14px;
+            padding-top: 10px;
+            border-top: 1px dashed #eee;
+            font-size: 11px;
+            line-height: 1.8;
+            color: #aaa;
+        }
+
+        @media (max-width: 420px) {
+            body {
+                padding: 22px 12px 40px;
+            }
+
+            .xzy_card {
+                padding: 16px 14px 18px;
+            }
+
+            .xzy_tab_text {
+                font-size: 15px;
+            }
+
+            .xzy_item {
+                gap: 8px;
+                height: 30px;
+            }
+
+            .xzy_title {
+                font-size: 13px;
+            }
+
+            .xzy_count {
+                min-width: 44px;
+                font-size: 11px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .xzy_tab_bg_on,
+            .xzy_panel,
+            .xzy_tab_text {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="xzy_page">
+    <a class="xzy_back" href="index.html">← 返回首页</a>
+
+    <section class="xzy_card" id="xzy_card">
+        <h1 class="xzy_head_img">
+            <img class="xzy_img" data-src="img/xzy_tab_title.jpg" alt="点击排行" width="300" height="33">
+        </h1>
+
+        <div class="xzy_tabs" role="tablist" aria-label="点击排行榜">
+            <button class="xzy_tab" id="xzy_tab_live" type="button" role="tab"
+                    aria-selected="false" aria-controls="xzy_panel" tabindex="-1" data-key="live">
+                <img class="xzy_tab_bg xzy_tab_bg_off xzy_img" data-src="img/xzy_tab_default.jpg" alt="" aria-hidden="true">
+                <img class="xzy_tab_bg xzy_tab_bg_on xzy_img" data-src="img/xzy_tab_active.jpg" alt="" aria-hidden="true">
+                <span class="xzy_tab_text">实时点击</span>
+            </button>
+            <button class="xzy_tab xzy_tab_on" id="xzy_tab_day" type="button" role="tab"
+                    aria-selected="true" aria-controls="xzy_panel" tabindex="0" data-key="day">
+                <img class="xzy_tab_bg xzy_tab_bg_off xzy_img" data-src="img/xzy_tab_default.jpg" alt="" aria-hidden="true">
+                <img class="xzy_tab_bg xzy_tab_bg_on xzy_img" data-src="img/xzy_tab_active.jpg" alt="" aria-hidden="true">
+                <span class="xzy_tab_text">24小时排行</span>
+            </button>
+        </div>
+
+        <div class="xzy_panel" id="xzy_panel" role="tabpanel" aria-live="polite" aria-labelledby="xzy_tab_day"></div>
+
+        <p class="xzy_hint">选项卡背景均为图片：选中态显示高亮图片，未选中态显示默认图片。默认图片随组件进入视口加载，高亮图片在首次切换（或悬停）时按需加载。</p>
+    </section>
+</div>
+
+<script>
+(function () {
+    'use strict';
+
+    var xzy_data = {
+        live: [
+            { t: '夏日清凉游 海滩人潮涌动', c: 98632 },
+            { t: '新款折叠屏手机正式发布', c: 87310 },
+            { t: '城市地铁新线路开通试运营', c: 76540 },
+            { t: '台风过境后 沿海渔船陆续回港', c: 66214 },
+            { t: '毕业季招聘会现场人气火爆', c: 55120 },
+            { t: '新能源车型月度销量再创新高', c: 48730 },
+            { t: '老字号糕点店门口排起长队', c: 39218 },
+            { t: '全民健身日 公园晨练成风景', c: 28450 }
+        ],
+        day: [
+            { t: '灯塔水母：地球上唯一不死生物', c: 356322 },
+            { t: '阿里巴巴全资收购UC 前永福将出任', c: 311246 },
+            { t: '亚马逊惊现三米长巨滑舌鱼用肺呼吸', c: 295883 },
+            { t: '奉化男子上山抓野味 遭遇极濒动物', c: 266061 },
+            { t: '大白鲨深海失踪 或被大型生物吞食', c: 243936 },
+            { t: '南非小犀牛目睹母亲被猎杀不肯离开', c: 224346 },
+            { t: '余额宝周岁：收益率“过山车”', c: 172694 },
+            { t: '“尸油入餐桌”纯属无稽之谈', c: 128789 }
+        ]
+    };
+
+    var xzy_card = document.getElementById('xzy_card');
+    var xzy_panel = document.getElementById('xzy_panel');
+    var xzy_tabs = Array.prototype.slice.call(document.querySelectorAll('.xzy_tab'));
+    var xzy_state = {
+        key: 'day',
+        timer: null
+    };
+
+    function xzy_ready(img) {
+        img.classList.add('xzy_img_ready');
+    }
+
+    function xzy_load(img) {
+        if (!img) {
+            return;
+        }
+        if (img.getAttribute('src')) {
+            if (img.complete && img.naturalWidth > 0) {
+                xzy_ready(img);
+            }
+            return;
+        }
+        var xzy_src = img.getAttribute('data-src');
+        if (!xzy_src) {
+            return;
+        }
+        img.addEventListener('load', function () {
+            xzy_ready(img);
+        });
+        img.decoding = 'async';
+        img.src = xzy_src;
+        if (img.complete && img.naturalWidth > 0) {
+            xzy_ready(img);
+        }
+    }
+
+    function xzy_load_highlight(btn) {
+        if (btn) {
+            xzy_load(btn.querySelector('.xzy_tab_bg_on'));
+        }
+    }
+
+    function xzy_load_visible() {
+        Array.prototype.forEach.call(
+            xzy_card.querySelectorAll('.xzy_tab_bg_off, .xzy_head_img img'),
+            xzy_load
+        );
+        xzy_load_highlight(xzy_tabs.filter(function (xzy_btn) {
+            return xzy_btn.classList.contains('xzy_tab_on');
+        })[0]);
+    }
+
+    if ('IntersectionObserver' in window) {
+        var xzy_io = new IntersectionObserver(function (xzy_entries) {
+            if (xzy_entries.some(function (xzy_e) { return xzy_e.isIntersecting; })) {
+                xzy_load_visible();
+                xzy_io.disconnect();
+            }
+        }, { rootMargin: '150px' });
+        xzy_io.observe(xzy_card);
+    } else {
+        xzy_load_visible();
+    }
+
+    window.addEventListener('load', function () {
+        if (!document.querySelector('.xzy_tab_bg_off[src]')) {
+            xzy_load_visible();
+        }
+    });
+
+    function xzy_render(xzy_key) {
+        var xzy_list = document.createElement('ul');
+        xzy_list.className = 'xzy_list';
+
+        xzy_data[xzy_key].forEach(function (xzy_item, xzy_i) {
+            var xzy_li = document.createElement('li');
+            xzy_li.className = 'xzy_item';
+
+            var xzy_rank = document.createElement('span');
+            xzy_rank.className = 'xzy_rank ' + (xzy_i < 3 ? 'xzy_rank_top' : 'xzy_rank_normal');
+            xzy_rank.textContent = xzy_i + 1;
+
+            var xzy_title = document.createElement('span');
+            xzy_title.className = 'xzy_title';
+            xzy_title.textContent = xzy_item.t;
+            xzy_title.title = xzy_item.t;
+
+            var xzy_count = document.createElement('span');
+            xzy_count.className = 'xzy_count';
+            xzy_count.textContent = xzy_item.c;
+
+            xzy_li.appendChild(xzy_rank);
+            xzy_li.appendChild(xzy_title);
+            xzy_li.appendChild(xzy_count);
+            xzy_list.appendChild(xzy_li);
+        });
+
+        xzy_panel.innerHTML = '';
+        xzy_panel.appendChild(xzy_list);
+    }
+
+    function xzy_select(xzy_key, xzy_focus) {
+        var xzy_btn = xzy_tabs.filter(function (xzy_b) {
+            return xzy_b.getAttribute('data-key') === xzy_key;
+        })[0];
+
+        if (!xzy_btn || xzy_key === xzy_state.key) {
+            if (xzy_focus && xzy_btn) {
+                xzy_btn.focus();
+            }
+            return;
+        }
+
+        xzy_state.key = xzy_key;
+
+        xzy_tabs.forEach(function (xzy_b) {
+            var xzy_on = xzy_b === xzy_btn;
+            xzy_b.classList.toggle('xzy_tab_on', xzy_on);
+            xzy_b.setAttribute('aria-selected', xzy_on ? 'true' : 'false');
+            xzy_b.tabIndex = xzy_on ? 0 : -1;
+        });
+
+        xzy_panel.setAttribute('aria-labelledby', xzy_btn.id);
+        xzy_load_highlight(xzy_btn);
+
+        if (xzy_focus) {
+            xzy_btn.focus();
+        }
+
+        clearTimeout(xzy_state.timer);
+        xzy_panel.classList.add('xzy_fading');
+        xzy_state.timer = setTimeout(function () {
+            xzy_render(xzy_key);
+            void xzy_panel.offsetHeight;
+            xzy_panel.classList.remove('xzy_fading');
+        }, 160);
+    }
+
+    xzy_tabs.forEach(function (xzy_btn, xzy_index) {
+        xzy_btn.addEventListener('click', function () {
+            xzy_select(xzy_btn.getAttribute('data-key'), false);
+        });
+
+        xzy_btn.addEventListener('pointerenter', function () {
+            if (window.matchMedia && window.matchMedia('(hover: hover)').matches) {
+                xzy_load_highlight(xzy_btn);
+            }
+        });
+
+        xzy_btn.addEventListener('keydown', function (xzy_e) {
+            var xzy_next = null;
+            if (xzy_e.key === 'ArrowRight') {
+                xzy_next = (xzy_index + 1) % xzy_tabs.length;
+            } else if (xzy_e.key === 'ArrowLeft') {
+                xzy_next = (xzy_index - 1 + xzy_tabs.length) % xzy_tabs.length;
+            } else if (xzy_e.key === 'Home') {
+                xzy_next = 0;
+            } else if (xzy_e.key === 'End') {
+                xzy_next = xzy_tabs.length - 1;
+            }
+            if (xzy_next !== null) {
+                xzy_e.preventDefault();
+                xzy_select(xzy_tabs[xzy_next].getAttribute('data-key'), true);
+            }
+        });
+    });
+
+    xzy_render('day');
+})();
+</script>
+</body>
+</html>
